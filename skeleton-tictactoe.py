@@ -3,12 +3,15 @@
 import time
 
 class Game:
+	board_size = 3
+	number_of_blocks = 0
+	lineup_size = 3
 	MINIMAX = 0
 	ALPHABETA = 1
 	HUMAN = 2
 	AI = 3
 	
-	def __init__(self, recommend = True):
+	def __init__(self, board_size, number_of_blocks, lineup_size, recommend = True):
 		self.initialize_game()
 		self.recommend = recommend
 		
@@ -21,14 +24,17 @@ class Game:
 
 	def draw_board(self):
 		print()
-		for y in range(0, 3):
-			for x in range(0, 3):
+		for y in range(0, self.board_size):
+			for x in range(0, self.board_size):
 				print(F'{self.current_state[x][y]}', end="")
 			print()
 		print()
 		
 	def is_valid(self, px, py):
-		if px < 0 or px > 2 or py < 0 or py > 2:
+		'''
+		Checks if player move is on an empty slot on inside game bounds
+		'''
+		if px < 0 or px > self.board_size-1 or py < 0 or py > self.board_size-1:
 			return False
 		elif self.current_state[px][py] != '.':
 			return False
@@ -36,8 +42,11 @@ class Game:
 			return True
 
 	def is_end(self):
+		'''
+		Verifies if win condition vertical/horizontal/diagonal
+		'''
 		# Vertical win
-		for i in range(0, 3):
+		for i in range(0, self.lineup_size):
 			if (self.current_state[0][i] != '.' and
 				self.current_state[0][i] == self.current_state[1][i] and
 				self.current_state[1][i] == self.current_state[2][i]):
