@@ -46,11 +46,11 @@ class Game:
 		Verifies if win condition vertical/horizontal/diagonal
 		'''
 		# Vertical win
-		for i in range(0, self.lineup_size):
-			if (self.current_state[0][i] != '.' and
-				self.current_state[0][i] == self.current_state[1][i] and
-				self.current_state[1][i] == self.current_state[2][i]):
-				return self.current_state[0][i]
+		for i in range(0, self.board_size):
+				for j in range(0, self.board_size-self.lineup_size):
+						if (self.current_state[j][i] != '.' and
+						self.current_state[j][i] == self.current_state[j+1][i] and
+						self.current_state[j+1][i] == self.current_state[2][i]):return self.current_state[0][i]
 		# Horizontal win
 		for i in range(0, 3):
 			if (self.current_state[i] == ['X', 'X', 'X']):
@@ -68,8 +68,8 @@ class Game:
 			self.current_state[0][2] == self.current_state[2][0]):
 			return self.current_state[0][2]
 		# Is whole board full?
-		for i in range(0, 3):
-			for j in range(0, 3):
+		for i in range(0, self.lineup_size):
+			for j in range(0, self.lineup_size):
 				# There's an empty field, we continue the game
 				if (self.current_state[i][j] == '.'):
 					return None
