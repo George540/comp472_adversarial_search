@@ -46,23 +46,40 @@ class Game:
 		Verifies if win condition vertical/horizontal/diagonal
 		'''
 		# Vertical win
-		for i in range(0, self.board_size):
-				for j in range(0, self.board_size-self.lineup_size):
-						if (self.current_state[j][i] != '.' and
-						self.current_state[j][i] == self.current_state[j+1][i] and
-						self.current_state[j+1][i] == self.current_state[2][i]):return self.current_state[0][i]
+		pivot_v = '.'
+		for j in range(0, self.board_size): #iterate through columns first
+			for i in range(0, self.board_size-self.lineup_size+1): #iterate through rows after (the arrays themselves)
+				pivot_v = self.current_state[i][j]
+				hasFailed = False
+				if (pivot_v != '.'):
+					for k in range(1, self.lineup_size+1): #iterate through winning lineup size
+							if (pivot_v != self.current_state[i][j+k]):
+								hasFailed = True
+								break
+					if not hasFailed:return pivot_v #if the third loop iterates entirely, it means a lineup was found. Return the pivot
 		# Horizontal win
-		for i in range(0, 3):
-			if (self.current_state[i] == ['X', 'X', 'X']):
-				return 'X'
-			elif (self.current_state[i] == ['O', 'O', 'O']):
-				return 'O'
+		#Create what the winning line ups will look like horizontally in the form of a string
+		horizontal_winX = 'X' * self.board_size
+		horizontal_winO = 'O' * self.board_size
+		for i in range(0, self.board_size):
+			current_row = ''.join(self.current_state[i]) # turn array into string: for example, ['X', 'O', 'X'] -> 'XOX'
+			if (horizontal_winX in current_row):return 'X'
+			elif (horizontal_winO in current_row):return 'O'
 		# Main diagonal win
-		if (self.current_state[0][0] != '.' and
-			self.current_state[0][0] == self.current_state[1][1] and
-			self.current_state[0][0] == self.current_state[2][2]):
-			return self.current_state[0][0]
+		pivot_d1 = '.'
+		#iterate through rows first
+		for i in range(0, self.board_size-self.lineup_size+1): # must consider a limit for the diagonal size
+			for j in range(0, self.board_size-self.lineup_size+1):
+				pivot_d1 = self.current_state[i][j]
+				hasFailed = False
+				if (pivot_d1 != '.'):
+					for k in range(1, self.lineup_size+1):
+							if (pivot_d1 != self.current_state[i+k][j+k]): #iterate diagonally
+								hasFailed = True
+								break
+					if not hasFailed:return pivot_d1
 		# Second diagonal win
+		# SAME AS D1, BUT OPPOSITE ITERATION??
 		if (self.current_state[0][2] != '.' and
 			self.current_state[0][2] == self.current_state[1][1] and
 			self.current_state[0][2] == self.current_state[2][0]):
