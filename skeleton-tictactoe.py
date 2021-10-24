@@ -80,6 +80,18 @@ class Game:
 					if not hasFailed:return pivot_d1
 		# Second diagonal win
 		# SAME AS D1, BUT OPPOSITE ITERATION??
+		pivot_d2 = '.'
+		for i in range(self.board_size, self.lineup_size-1, -1):
+    		for j in range(self.board_size, self.lineup_size-1, -1):
+    			pivot_d2 = self.current_state[i][j]
+				hasFailed = False
+				if (pivot_d2 != '.'):
+    				for k in range(1, self.lineup_size+1):
+    						if (pivot_d2 != self.current_state[i-k][j-k]):
+    								hasFailed = True
+									break
+					if not hasFailed:return pivot_d2
+    						
 		if (self.current_state[0][2] != '.' and
 			self.current_state[0][2] == self.current_state[1][1] and
 			self.current_state[0][2] == self.current_state[2][0]):
