@@ -1,19 +1,76 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
+##########################################
+## skeleton-titactoe.py (Mini-Assignment 2 COMP 472)
+## This code contains the execution of the program's main and various methods to
+## Implement an adversarial search algorithm for the game "Line 'em up"
+## Created by Team Oranges
+##########################################
 
 import time
 
 class Game:
-	board_size = 3
-	number_of_blocks = 0
-	lineup_size = 3
+	'''
+	Let 
+	
+	Number of blocks on the board
+		number_of_blocks = b
+
+	Size of the board (n * n)
+		board_size = n
+
+	The amount of consecutive positions needed to win
+		lineup_size = s
+	'''
+	# The variables class Game will use:
+	# board_size
+	# number_of_blocks
+	# lineup_size
+
 	MINIMAX = 0
 	ALPHABETA = 1
 	HUMAN = 2
 	AI = 3
 	
-	def __init__(self, board_size, number_of_blocks, lineup_size, recommend = True):
+	def __init__(self, board_size=3, number_of_blocks=0, lineup_size=3, recommend = True):
+
 		self.initialize_game()
+		
+		#Checking board_size values to be within 3 and 10.
+		if(board_size >= 3 and board_size <= 10):
+			self.board_size = board_size
+		else:
+			if(board_size < 3):
+				print("The board size is too small, defaulting to 3...")
+				self.board_size = 3
+			elif(board_size > 10):
+				print("The board size is too large, defaulting to 10...")
+				self.board_size = 10
+		
+		#Checking the number of blocks b, to be within 0 and 2*n, where n is board_size
+		if(number_of_blocks >= 0 and number_of_blocks <= (2 * self.board_size)):
+			self.number_of_blocks = number_of_blocks
+		else:
+			if(number_of_blocks < 0):
+				print("Block count is negative, setting to zero as default...")
+				self.number_of_blocks = 0
+			elif(number_of_blocks > (2 * self.board_size)):
+				print("The number of blocks is too much, defaulting to", (2 * self.board_size), "blocks...")
+				self.number_of_blocks = 2 * self.board_size
+
+		#Checking the winning line-up size to be within 3 and n, where n is board_size
+		if(lineup_size >= 3 and lineup_size <= self.board_size):
+			self.lineup_size = lineup_size
+		else:
+			if(lineup_size < 3):
+				print("Line up size is not enough, setting to 3 as default...")
+				self.lineup_size = 3
+			elif(lineup_size > self.board_size):
+				print("The line up size is too big, defaulting to n=", (self.board_size))
+				self.lineup_size = self.board_size
+		
+		#Recommend if the player should receive tips on what move to play next
 		self.recommend = recommend
+		print(str(self.board_size-self.lineup_size+1))
 		
 	def initialize_game(self):
 		self.current_state = [['.','.','.'],
@@ -32,7 +89,7 @@ class Game:
 		
 	def is_valid(self, px, py):
 		'''
-		Checks if player move is on an empty slot on inside game bounds
+		Checks if player move is inside game bounds or on an empty slot
 		'''
 		if px < 0 or px > self.board_size-1 or py < 0 or py > self.board_size-1:
 			return False
@@ -43,11 +100,12 @@ class Game:
 
 	def is_end(self):
 		'''
-		Verifies if win condition vertical/horizontal/diagonal
+		Verifies if win condition vertical/horizontal/diagonal lineup_size is met
 		'''
 		# Vertical win
 		pivot_v = '.'
 		for j in range(0, self.board_size): #iterate through columns first
+			#review: line up size can equal n, therefore (0,-1) below
 			for i in range(0, self.board_size-self.lineup_size+1): #iterate through rows after (the arrays themselves)
 				pivot_v = self.current_state[i][j]
 				hasFailed = False
@@ -59,6 +117,7 @@ class Game:
 					if not hasFailed:return pivot_v #if the third loop iterates entirely, it means a lineup was found. Return the pivot
 		# Horizontal win
 		#Create what the winning line ups will look like horizontally in the form of a string
+		#review: think it's supposed to be line_up size? not board size?
 		horizontal_winX = 'X' * self.board_size
 		horizontal_winO = 'O' * self.board_size
 		for i in range(0, self.board_size):
@@ -82,14 +141,14 @@ class Game:
 		# SAME AS D1, BUT OPPOSITE ITERATION??
 		pivot_d2 = '.'
 		for i in range(self.board_size, self.lineup_size-1, -1):
-    		for j in range(self.board_size, self.lineup_size-1, -1):
-    			pivot_d2 = self.current_state[i][j]
+			for j in range(self.board_size, self.lineup_size-1, -1):
+				pivot_d2 = self.current_state[i][j]
 				hasFailed = False
 				if (pivot_d2 != '.'):
-    				for k in range(1, self.lineup_size+1):
-    						if (pivot_d2 != self.current_state[i-k][j-k]):
-    								hasFailed = True
-									break
+					for k in range(1, self.lineup_size+1):
+						if (pivot_d2 != self.current_state[i-k][j-k]):
+							hasFailed = True
+							break
 					if not hasFailed:return pivot_d2
     						
 		if (self.current_state[0][2] != '.' and
@@ -105,6 +164,7 @@ class Game:
 		# It's a tie!
 		return '.'
 
+	# def check_end checks(self) checks if the game has finished, returns winner, tie message, or None if game is still on going
 	def check_end(self):
 		self.result = self.is_end()
 		# Printing the appropriate message if the game has ended
@@ -235,6 +295,7 @@ class Game:
 			if self.check_end():
 				return
 			start = time.time()
+			#X is ◦ the white/hollow circle
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False)
@@ -259,8 +320,8 @@ class Game:
 
 def main():
 	g = Game(recommend=True)
-	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
+	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+	#g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
 
 if __name__ == "__main__":
 	main()
