@@ -103,39 +103,54 @@ class Game:
 		'''
 		# Vertical win
 		pivot_v = '.'
+		print("Vertical check:")
 		for j in range(0, self.board_size): #iterate through columns first
 			for i in range(0, self.board_size-self.lineup_size+1): #iterate through rows after (the arrays themselves)
 				pivot_v = self.current_state[i][j]
+				#print("[", i, "][", j,"] = ", pivot_v)
 				hasFailed = False
 				if (pivot_v != '.'):
-					for k in range(1, self.lineup_size+1): #iterate through winning lineup size
-							if (pivot_v != self.current_state[i+k][j]):
-								hasFailed = True
-								break
+					for k in range(1, self.lineup_size): #iterate through winning lineup size
+						#print("k:", k)
+						#print("[", i, "][", (j+k),"]")
+						if ((j + k) == self.board_size or pivot_v != self.current_state[i][j+k]):
+							hasFailed = True
+							break
 					if not hasFailed:return pivot_v #if the third loop iterates entirely, it means a lineup was found. Return the pivot
 		# Horizontal win
 		#Create what the winning line ups will look like horizontally in the form of a string
 		#review: think it's supposed to be line_up size? not board size?
+		print("Horizontal check:")
 		horizontal_winX = 'X' * self.lineup_size
 		horizontal_winO = 'O' * self.lineup_size
 		for i in range(0, self.board_size):
 			current_row = ''.join(self.current_state[i]) # turn array into string: for example, ['X', 'O', 'X'] -> 'XOX'
+			print(self.current_state[i])
+			print(current_row)
 			if (horizontal_winX in current_row):return 'X'
 			elif (horizontal_winO in current_row):return 'O'
+
 		# Main diagonal win
+		print("Main diag check:")
 		pivot_d1 = '.'
 		#iterate through rows first
 		for i in range(0, self.board_size-self.lineup_size+1): # must consider a limit for the diagonal size
 			for j in range(0, self.board_size-self.lineup_size+1):
+				# print("i:", i, ",j:", j)
+				# print("value:",self.current_state[i][j])
 				pivot_d1 = self.current_state[i][j]
 				hasFailed = False
 				if (pivot_d1 != '.'):
-					for k in range(1, self.lineup_size+1):
-							if (pivot_d1 != self.current_state[i+k][j+k]): #iterate diagonally
-								hasFailed = True
-								break
+					for k in range(1, self.lineup_size):
+						# print(k)
+						# print("[",i+k,"],[",j+k,"]")
+						if (pivot_d1 != self.current_state[i+k][j+k]): #iterate diagonally
+							hasFailed = True
+							break
 					if not hasFailed:return pivot_d1
+
 		# Second diagonal win
+		print("Second diag check:")
 		decrement = self.board_size - 1
 		previous = '.'
 		count = 0
