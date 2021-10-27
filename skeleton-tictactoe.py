@@ -70,7 +70,6 @@ class Game:
 		
 		#Recommend if the player should receive tips on what move to play next
 		self.recommend = recommend
-		print(str(self.board_size-self.lineup_size+1))
 		
 	def initialize_game(self):
 		self.current_state = [['.','.','.'],
@@ -105,21 +104,20 @@ class Game:
 		# Vertical win
 		pivot_v = '.'
 		for j in range(0, self.board_size): #iterate through columns first
-			#review: line up size can equal n, therefore (0,-1) below
 			for i in range(0, self.board_size-self.lineup_size+1): #iterate through rows after (the arrays themselves)
 				pivot_v = self.current_state[i][j]
 				hasFailed = False
 				if (pivot_v != '.'):
 					for k in range(1, self.lineup_size+1): #iterate through winning lineup size
-							if (pivot_v != self.current_state[i][j+k]):
+							if (pivot_v != self.current_state[i+k][j]):
 								hasFailed = True
 								break
 					if not hasFailed:return pivot_v #if the third loop iterates entirely, it means a lineup was found. Return the pivot
 		# Horizontal win
 		#Create what the winning line ups will look like horizontally in the form of a string
 		#review: think it's supposed to be line_up size? not board size?
-		horizontal_winX = 'X' * self.board_size
-		horizontal_winO = 'O' * self.board_size
+		horizontal_winX = 'X' * self.lineup_size
+		horizontal_winO = 'O' * self.lineup_size
 		for i in range(0, self.board_size):
 			current_row = ''.join(self.current_state[i]) # turn array into string: for example, ['X', 'O', 'X'] -> 'XOX'
 			if (horizontal_winX in current_row):return 'X'
@@ -320,7 +318,7 @@ class Game:
 
 def main():
 	g = Game(recommend=True)
-	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
 	#g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
 
 if __name__ == "__main__":
