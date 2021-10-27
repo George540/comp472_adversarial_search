@@ -103,7 +103,7 @@ class Game:
 		'''
 		# Vertical win
 		pivot_v = '.'
-		print("Vertical check:")
+		#print("Vertical check:")
 		for j in range(0, self.board_size): #iterate through columns first
 			for i in range(0, self.board_size-self.lineup_size+1): #iterate through rows after (the arrays themselves)
 				pivot_v = self.current_state[i][j]
@@ -120,18 +120,18 @@ class Game:
 		# Horizontal win
 		#Create what the winning line ups will look like horizontally in the form of a string
 		#review: think it's supposed to be line_up size? not board size?
-		print("Horizontal check:")
+		#print("Horizontal check:")
 		horizontal_winX = 'X' * self.lineup_size
 		horizontal_winO = 'O' * self.lineup_size
 		for i in range(0, self.board_size):
 			current_row = ''.join(self.current_state[i]) # turn array into string: for example, ['X', 'O', 'X'] -> 'XOX'
-			print(self.current_state[i])
-			print(current_row)
+			# print(self.current_state[i])
+			# print(current_row)
 			if (horizontal_winX in current_row):return 'X'
 			elif (horizontal_winO in current_row):return 'O'
 
 		# Main diagonal win
-		print("Main diag check:")
+		#print("Main diag check:")
 		pivot_d1 = '.'
 		#iterate through rows first
 		for i in range(0, self.board_size-self.lineup_size+1): # must consider a limit for the diagonal size
@@ -150,7 +150,7 @@ class Game:
 					if not hasFailed:return pivot_d1
 
 		# Second diagonal win
-		print("Second diag check:")
+		#print("Second diag check:")
 		decrement = self.board_size - 1
 		previous = '.'
 		count = 0
@@ -362,7 +362,7 @@ class Game:
 def main():
 	g = Game(recommend=True)
 	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	#g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
+	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
 
 if __name__ == "__main__":
 	main()
