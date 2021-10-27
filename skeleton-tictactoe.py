@@ -65,11 +65,12 @@ class Game:
 				print("Line up size is not enough, setting to 3 as default...")
 				self.lineup_size = 3
 			elif(lineup_size > self.board_size):
-				print("The line up size is too big, defaulting to", (self.board_size))
+				print("The line up size is too big, defaulting to n=", (self.board_size))
 				self.lineup_size = self.board_size
 		
 		#Recommend if the player should receive tips on what move to play next
 		self.recommend = recommend
+		print(str(self.board_size-self.lineup_size+1))
 		
 	def initialize_game(self):
 		self.current_state = [['.','.','.'],
@@ -99,11 +100,12 @@ class Game:
 
 	def is_end(self):
 		'''
-		Verifies if win condition vertical/horizontal/diagonal
+		Verifies if win condition vertical/horizontal/diagonal lineup_size is met
 		'''
 		# Vertical win
 		pivot_v = '.'
 		for j in range(0, self.board_size): #iterate through columns first
+			#review: line up size can equal n, therefore (0,-1) below
 			for i in range(0, self.board_size-self.lineup_size+1): #iterate through rows after (the arrays themselves)
 				pivot_v = self.current_state[i][j]
 				hasFailed = False
@@ -115,6 +117,7 @@ class Game:
 					if not hasFailed:return pivot_v #if the third loop iterates entirely, it means a lineup was found. Return the pivot
 		# Horizontal win
 		#Create what the winning line ups will look like horizontally in the form of a string
+		#review: think it's supposed to be line_up size? not board size?
 		horizontal_winX = 'X' * self.board_size
 		horizontal_winO = 'O' * self.board_size
 		for i in range(0, self.board_size):
@@ -161,7 +164,7 @@ class Game:
 		# It's a tie!
 		return '.'
 
-	# def check_end checks(self) if the game has finished, returns winner, tie message, or None if game is still on going
+	# def check_end checks(self) checks if the game has finished, returns winner, tie message, or None if game is still on going
 	def check_end(self):
 		self.result = self.is_end()
 		# Printing the appropriate message if the game has ended
@@ -317,7 +320,7 @@ class Game:
 
 def main():
 	g = Game(recommend=True)
-	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
 	#g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
 
 if __name__ == "__main__":
