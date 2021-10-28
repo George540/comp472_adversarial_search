@@ -113,7 +113,7 @@ class Game:
 					for k in range(1, self.lineup_size): #iterate through winning lineup size
 						#print("k:", k)
 						#print("[", i, "][", (j+k),"]")
-						if ((j + k) == self.board_size or pivot_v != self.current_state[i][j+k]):
+						if (pivot_v != self.current_state[i+k][j]):
 							hasFailed = True
 							break
 					if not hasFailed:return pivot_v #if the third loop iterates entirely, it means a lineup was found. Return the pivot
