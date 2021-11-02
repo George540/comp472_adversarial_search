@@ -32,7 +32,10 @@ class Game:
 	AI = 3
 	
 	def __init__(self, board_size=7, number_of_blocks=0, lineup_size=3, recommend = True):
-
+		self.board_size = board_size
+		self.number_of_blocks = number_of_blocks
+		self.lineup_size = lineup_size
+		self.recommend = recommend
 		self.initialize_game()
 		
 		#Checking board_size values to be within 3 and 10.
@@ -332,6 +335,7 @@ class Game:
 
 def main():
 	g = Game(recommend=True)
+	print(g.board_size)
 	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
 	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
 
