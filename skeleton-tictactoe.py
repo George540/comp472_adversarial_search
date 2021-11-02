@@ -75,14 +75,7 @@ class Game:
 		self.recommend = recommend
 		
 	def initialize_game(self):
-		if (self.board_size > 3):
-			for i in range (0, self.board_size):
-				for j in range(0, self.board_size):
-					self.current_state[i][j] = '.'
-		else:
-			self.current_state = [['.','.','.'],
-								['.','.','.'],
-							 	 ['.','.','.']]
+		self.current_state = [['.' for i in range(self.board_size)] for j in range(self.board_size)]
 		# Player X always plays first
 		self.player_turn = 'X'
 
