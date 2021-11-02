@@ -31,7 +31,7 @@ class Game:
 	HUMAN = 2
 	AI = 3
 	
-	def __init__(self, board_size=3, number_of_blocks=0, lineup_size=3, recommend = True):
+	def __init__(self, board_size=7, number_of_blocks=0, lineup_size=3, recommend = True):
 
 		self.initialize_game()
 		
@@ -72,9 +72,14 @@ class Game:
 		self.recommend = recommend
 		
 	def initialize_game(self):
-		self.current_state = [['.','.','.'],
-							  ['.','.','.'],
-							  ['.','.','.']]
+		if (self.board_size > 3):
+			for i in range (0, self.board_size):
+				for j in range(0, self.board_size):
+					self.current_state[i][j] = '.'
+		else:
+			self.current_state = [['.','.','.'],
+								['.','.','.'],
+							 	 ['.','.','.']]
 		# Player X always plays first
 		self.player_turn = 'X'
 
@@ -151,13 +156,13 @@ class Game:
 
 		# Second diagonal win
 		pivot_d2 = '.'
-		for i in range(self.board_size-1, self.lineup_size-2, -1):
-			for j in range(self.board_size-1, self.lineup_size-2,-1):
+		for i in range(0, self.board_size-self.lineup_size):
+			for j in range(self.board_size-1, self.lineup_size-2, -1):
 				pivot_d2 = self.current_state[i][j]
 				hasFailed = False
 				if (pivot_d2 != '.'):
 					for k in range(1, self.lineup_size+1):
-						if (pivot_d2 != self.current_state[i-k][j-k]):
+						if (pivot_d2 != self.current_state[i+k][j-k]):
 							hasFailed = True
 							break
 					if not hasFailed:return pivot_d2
