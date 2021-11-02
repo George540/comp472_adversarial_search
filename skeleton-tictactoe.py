@@ -130,7 +130,7 @@ class Game:
 			if (horizontal_winX in current_row):return 'X'
 			elif (horizontal_winO in current_row):return 'O'
 
-		# Main diagonal win
+		# Main diagonal win. Ie diagonals that start from top left and work their way to bottom right, including main diagonal
 		#print("Main diag check:")
 		pivot_d1 = '.'
 		#iterate through rows first
@@ -150,105 +150,17 @@ class Game:
 					if not hasFailed:return pivot_d1
 
 		# Second diagonal win
-		#print("Second diag check:")
-		decrement = self.board_size - 1
-		previous = '.'
-		count = 0
-		for i in range(0 , self.board_size):
-			if(i > (self.board_size - self.lineup_size) and count == 0):
-				#(self.board_size - self.lineup_size) is the last possible index that the second diag win can be found given the value of self.lineup_size
-				#ie second diag win cannot be found here due to the lack of spaces remaining to check
-				break
-			if(self.current_state[i][decrement] != '.' and self.current_state[i][decrement] != '#'):
-				if(self.current_state[i][decrement]=='X'):
-					if(count == 0):
-						count = count + 1
-					elif(self.current_state[i][decrement] == previous):
-						count = count + 1
-					else:
-						count = 0
-					if(count == self.lineup_size):
-						return 'X'
-					previous = 'X'
-				elif(self.current_state[i][decrement]=='O'):
-					if(count == 0):
-						count = count + 1
-					elif(self.current_state[i][decrement] == previous):
-						count = count + 1
-					else:
-						count = 0
-					if(count == self.lineup_size):
-						return 'O'
-					previous = 'O'
-				decrement = decrement - 1
-			#if this forloop finishes then the second diagonal did not find a lineup_size win instance
-
-		# George's algo below ( i don't think it works due to it starting at bottom right coner instead of top right)
-		# pivot_d2 = '.'
-		# for i in range(self.board_size-1, self.lineup_size-2, -1):
-		# 	for j in range(self.board_size-1, self.lineup_size-2,-1):
-		# 		pivot_d2 = self.current_state[i][j]
-		# 		hasFailed = False
-		# 		if (pivot_d2 != '.'):
-		# 			for k in range(1, self.lineup_size+1):
-		# 				if (pivot_d2 != self.current_state[i-k][j-k]):
-		# 					hasFailed = True
-		# 					break
-		# 			if not hasFailed:return pivot_d2
-
-		#Check for diagonals that may form from top left to bottom right
-		if(self.lineup_size <= (self.board_size - 1)):
-			k = self.board_size - self.lineup_size
-			counter1 = 0
-			counter2 = 0
-			previous = None
-			while(k!=0):
-				for i in range(0 , (self.board_size - k)):
-					if(self.current_state[i][i+k] != '.' or self.current_state[i][i+k] != '#'):
-						if(self.current_state[i][i+k] == 'X'):
-							if(counter1 == 0):
-								counter1 = counter1 + 1
-							elif(self.current_state[i][i+k] == previous):
-								counter1 = counter1 + 1
-							else:
-								counter1 = 0
-							if(counter1 == self.lineup_size):
-								return 'X'
-							previous = 'X'
-						elif(self.current_state[i][i+k] == 'O'):
-							if(counter1 == 0):
-								counter1 = counter1 + 1
-							elif(self.current_state[i][i+k] == previous):
-								counter1 = counter1 + 1
-							else:
-								counter1 = 0
-							if(counter1 == self.lineup_size):
-								return 'O'
-							previous = 'O'
-					elif(self.current_state[i+k][i] != '.' or self.current_state[i+k][i] != '#'):
-						if(self.current_state[i+k][i] == 'X'):
-							if(counter2 == 0):
-								counter2 = counter2 + 1
-							elif(self.current_state[i+k][i] == previous2):
-								counter2 = counter2 + 1
-							else:
-								counter2 = 0
-							if(counter2 == self.lineup_size):
-								return 'X'
-							previous2 = 'X'
-						elif(self.current_state[i+k][i] == 'O'):
-							if(counter2 == 0):
-								counter2 = counter2 + 1
-							elif(self.current_state[i+k][i] == previous2):
-								counter2 = counter2 + 1
-							else:
-								counter2 = 0
-							if(counter2 == self.lineup_size):
-								return 'O'
-							previous2 = 'O'
-			
-				k = k -1
-
+		pivot_d2 = '.'
+		for i in range(self.board_size-1, self.lineup_size-2, -1):
+			for j in range(self.board_size-1, self.lineup_size-2,-1):
+				pivot_d2 = self.current_state[i][j]
+				hasFailed = False
+				if (pivot_d2 != '.'):
+					for k in range(1, self.lineup_size+1):
+						if (pivot_d2 != self.current_state[i-k][j-k]):
+							hasFailed = True
+							break
+					if not hasFailed:return pivot_d2
 
 		# Is whole board full?
 		for i in range(0, self.board_size):
