@@ -157,7 +157,7 @@ class Game:
 		for i in range(0 , self.board_size):
 			if(i > (self.board_size - self.lineup_size) and count == 0):
 				#(self.board_size - self.lineup_size) is the last possible index that the second diag win can be found given the value of self.lineup_size
-				#ie second diag cannot be found here
+				#ie second diag win cannot be found here due to the lack of spaces remaining to check
 				break
 			if(self.current_state[i][decrement] != '.' and self.current_state[i][decrement] != '#'):
 				if(self.current_state[i][decrement]=='X'):
@@ -195,6 +195,60 @@ class Game:
 		# 					hasFailed = True
 		# 					break
 		# 			if not hasFailed:return pivot_d2
+
+		#Check for diagonals that may form from top left to bottom right
+		if(self.lineup_size <= (self.board_size - 1)):
+			k = self.board_size - self.lineup_size
+			counter1 = 0
+			counter2 = 0
+			previous = None
+			while(k!=0):
+				for i in range(0 , (self.board_size - k)):
+					if(self.current_state[i][i+k] != '.' or self.current_state[i][i+k] != '#'):
+						if(self.current_state[i][i+k] == 'X'):
+							if(counter1 == 0):
+								counter1 = counter1 + 1
+							elif(self.current_state[i][i+k] == previous):
+								counter1 = counter1 + 1
+							else:
+								counter1 = 0
+							if(counter1 == self.lineup_size):
+								return 'X'
+							previous = 'X'
+						elif(self.current_state[i][i+k] == 'O'):
+							if(counter1 == 0):
+								counter1 = counter1 + 1
+							elif(self.current_state[i][i+k] == previous):
+								counter1 = counter1 + 1
+							else:
+								counter1 = 0
+							if(counter1 == self.lineup_size):
+								return 'O'
+							previous = 'O'
+					elif(self.current_state[i+k][i] != '.' or self.current_state[i+k][i] != '#'):
+						if(self.current_state[i+k][i] == 'X'):
+							if(counter2 == 0):
+								counter2 = counter2 + 1
+							elif(self.current_state[i+k][i] == previous2):
+								counter2 = counter2 + 1
+							else:
+								counter2 = 0
+							if(counter2 == self.lineup_size):
+								return 'X'
+							previous2 = 'X'
+						elif(self.current_state[i+k][i] == 'O'):
+							if(counter2 == 0):
+								counter2 = counter2 + 1
+							elif(self.current_state[i+k][i] == previous2):
+								counter2 = counter2 + 1
+							else:
+								counter2 = 0
+							if(counter2 == self.lineup_size):
+								return 'O'
+							previous2 = 'O'
+			
+				k = k -1
+
 
 		# Is whole board full?
 		for i in range(0, self.board_size):
