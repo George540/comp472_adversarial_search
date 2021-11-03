@@ -7,6 +7,7 @@
 ##########################################
 
 import time
+import random
 
 class Game:
 	'''
@@ -31,7 +32,7 @@ class Game:
 	HUMAN = 2
 	AI = 3
 	
-	def __init__(self, board_size=7, number_of_blocks=0, lineup_size=3, recommend = True):
+	def __init__(self, board_size=7, number_of_blocks=4, lineup_size=3, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -76,6 +77,8 @@ class Game:
 		
 	def initialize_game(self):
 		self.current_state = [['.' for i in range(self.board_size)] for j in range(self.board_size)]
+		for i in range(self.number_of_blocks):
+			self.current_state[random.randint(0,self.board_size-1)][random.randint(0,self.board_size-1)] = 'B'
 		# Player X always plays first
 		self.player_turn = 'X'
 
