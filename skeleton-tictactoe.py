@@ -31,6 +31,7 @@ class Game:
 	ALPHABETA = 1
 	HUMAN = 2
 	AI = 3
+	BLOCK = 'B'
 	
 	def __init__(self, board_size=7, number_of_blocks=4, lineup_size=3, recommend = True):
 		self.board_size = board_size
@@ -78,7 +79,7 @@ class Game:
 	def initialize_game(self):
 		self.current_state = [['.' for i in range(self.board_size)] for j in range(self.board_size)]
 		for i in range(self.number_of_blocks):
-			self.current_state[random.randint(0,self.board_size-1)][random.randint(0,self.board_size-1)] = 'B'
+			self.current_state[random.randint(0,self.board_size-1)][random.randint(0,self.board_size-1)] = self.BLOCK
 		# Player X always plays first
 		self.player_turn = 'X'
 
@@ -113,7 +114,7 @@ class Game:
 				pivot_v = self.current_state[i][j]
 				#print("[", i, "][", j,"] = ", pivot_v)
 				hasFailed = False
-				if (pivot_v != '.'):
+				if (pivot_v != '.' and pivot_v != self.BLOCK):
 					for k in range(1, self.lineup_size): #iterate through winning lineup size
 						#print("k:", k)
 						#print("[", i, "][", (j+k),"]")
@@ -144,7 +145,7 @@ class Game:
 				# print("value:",self.current_state[i][j])
 				pivot_d1 = self.current_state[i][j]
 				hasFailed = False
-				if (pivot_d1 != '.'):
+				if (pivot_d1 != '.' and pivot_d1 != self.BLOCK):
 					for k in range(1, self.lineup_size):
 						# print(k)
 						# print("[",i+k,"],[",j+k,"]")
@@ -159,7 +160,7 @@ class Game:
 			for j in range(self.board_size-1, self.lineup_size-2, -1):
 				pivot_d2 = self.current_state[i][j]
 				hasFailed = False
-				if (pivot_d2 != '.'):
+				if (pivot_d2 != '.' and pivot_d2 != self.BLOCK):
 					for k in range(1, self.lineup_size+1):
 						if (pivot_d2 != self.current_state[i+k][j-k]):
 							hasFailed = True
@@ -318,12 +319,12 @@ class Game:
 				else:
 					(m, x, y) = self.alphabeta(max=True)
 			end = time.time()
-			if (self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN):
+			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN)):
 					if self.recommend:
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Recommended move: x = {x}, y = {y}')
 					(x,y) = self.input_move()
-			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
+			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI)):
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 			self.current_state[x][y] = self.player_turn
