@@ -97,7 +97,7 @@ class Game:
 		'''
 		if px < 0 or px > self.board_size-1 or py < 0 or py > self.board_size-1:
 			return False
-		elif self.current_state[px][py] != '.':
+		elif self.current_state[px][py] != '.' and self.current_state[px][py] != self.BLOCK:
 			return False
 		else:
 			return True
