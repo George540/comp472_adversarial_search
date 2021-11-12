@@ -33,7 +33,7 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=7, number_of_blocks=4, lineup_size=3, recommend = True):
+	def __init__(self, board_size=4, number_of_blocks=4, lineup_size=3, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -206,6 +206,19 @@ class Game:
 		elif self.player_turn == 'O':
 			self.player_turn = 'X'
 		return self.player_turn
+
+	def heuristic_one(self):
+		'''
+		
+		'''
+		heuristic_value = 0
+		for i in range (0, self.board_size-1):
+			for j in range(0, self.board_size-1):
+				if self.current_state[i][j] == 'X':
+					heuristic_value += 1
+				if self.current_state[i][j] == 'O':
+					heuristic_value -= 1
+				
 
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
