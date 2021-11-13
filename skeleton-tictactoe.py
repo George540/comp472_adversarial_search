@@ -230,6 +230,8 @@ class Game:
 			minimize_for = 'X'
 		temp_heuristic_value = 0
 		total_heuristic_value =0
+
+		#Row
 		row_is_still_playable = False
 		for i in range (0, self.board_size):
 			temp_heuristic_value = 0
@@ -238,18 +240,49 @@ class Game:
 				# Makes sure there is still an empty spot to play in the row
 				if self.current_state[i][j] == '.':
 					row_is_still_playable = True
+				if self.current_state[i][j] == 'X':
+					temp_heuristic_value += 1
 				# Skips the last index, because it has no neighbour (prevents index out of bounds)
 				if j != self.board_size-1:
 					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == maximize_for:
 						temp_heuristic_value += 2
-					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == '.':
+					elif self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == '.':
 						temp_heuristic_value += 1
-					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == 'B':
+					elif self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == 'B':
 						temp_heuristic_value += 0
-					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == minimize_for:
+					elif self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == minimize_for:
 						temp_heuristic_value -= 1
-			if row_is_still_playable == False:
+			if row_is_still_playable == True:
 				total_heuristic_value += temp_heuristic_value
+
+		#Column
+		col_is_still_playable = False
+		for i in range (0, self.board_size):
+			temp_heuristic_value = 0
+			col_is_still_playable = False
+			for j in range(0, self.board_size):
+				# Makes sure there is still an empty spot to play in the row
+				if self.current_state[i][j] == '.':
+					col_is_still_playable = True
+				if self.current_state[i][j] == 'X':
+					temp_heuristic_value += 1
+				# Skips the last index, because it has no neighbour (prevents index out of bounds)
+				if i != self.board_size-1:
+					if self.current_state[i][j] == maximize_for and self.current_state[i+1][j] == maximize_for:
+						temp_heuristic_value += 2
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j] == '.':
+						temp_heuristic_value += 1
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j] == 'B':
+						temp_heuristic_value += 0
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j] == minimize_for:
+						temp_heuristic_value -= 1
+			if col_is_still_playable == True:
+				total_heuristic_value += temp_heuristic_value
+
+		#Main Diagonals
+		
+
+
 				
 
 	def minimax(self, max=False):
