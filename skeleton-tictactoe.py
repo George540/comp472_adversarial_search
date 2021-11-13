@@ -256,7 +256,6 @@ class Game:
 				total_heuristic_value += temp_heuristic_value
 
 		#Column
-		col_is_still_playable = False
 		for i in range (0, self.board_size):
 			temp_heuristic_value = 0
 			col_is_still_playable = False
@@ -279,9 +278,54 @@ class Game:
 			if col_is_still_playable == True:
 				total_heuristic_value += temp_heuristic_value
 
-		#Main Diagonals
-		
+		#Left to right Diagonal --->
+		for i in range (0, self.board_size):
+			temp_heuristic_value = 0
+			col_is_still_playable = False
+			for j in range(0, self.board_size):
+				# Makes sure there is still an empty spot to play in the row
+				if self.current_state[i][j] == '.':
+					col_is_still_playable = True
+				if self.current_state[i][j] == 'X':
+					temp_heuristic_value += 1
+				# Skips diagonals that are too small to win with (i.e a diagonal of size 2, in a game where you need 3 in a row to win)
+				if j <= self.board_size - self.lineup_size and i <= self.board_size - self.lineup_size:
+					if self.current_state[i][j] == maximize_for and self.current_state[i+1][j+1] == maximize_for:
+						temp_heuristic_value += 2
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j+1] == '.':
+						temp_heuristic_value += 1
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j+1] == 'B':
+						temp_heuristic_value += 0
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j+1] == minimize_for:
+						temp_heuristic_value -= 1
+			if col_is_still_playable == True:
+				total_heuristic_value += temp_heuristic_value
 
+		#Right to left Diagonal --->
+		for i in range (0, self.board_size):
+			temp_heuristic_value = 0
+			col_is_still_playable = False
+			for j in range(self.board_size, 0, -1):
+				# Makes sure there is still an empty spot to play in the row
+				if self.current_state[i][j] == '.':
+					col_is_still_playable = True
+				if self.current_state[i][j] == 'X':
+					temp_heuristic_value += 1
+				# Skips diagonals that are too small to win with (i.e a diagonal of size 2, in a game where you need 3 in a row to win)
+				if j >= self.lineup_size-1:
+					if self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == maximize_for:
+						temp_heuristic_value += 2
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == '.':
+						temp_heuristic_value += 1
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == 'B':
+						temp_heuristic_value += 0
+					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == minimize_for:
+						temp_heuristic_value -= 1
+				else:
+					break
+			if col_is_still_playable == True:
+				total_heuristic_value += temp_heuristic_value
+		return total_heuristic_value
 
 				
 
