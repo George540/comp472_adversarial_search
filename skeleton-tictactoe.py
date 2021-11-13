@@ -33,7 +33,7 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=4, number_of_blocks=4, lineup_size=3, recommend = True):
+	def __init__(self, board_size=3, number_of_blocks=3, lineup_size=3, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -85,8 +85,8 @@ class Game:
 
 	def draw_board(self):
 		print()
-		for y in range(0, self.board_size):
-			for x in range(0, self.board_size):
+		for x in range(0, self.board_size):
+			for y in range(0, self.board_size):
 				print(F'{self.current_state[x][y]}', end="")
 			print()
 		print()
@@ -229,7 +229,7 @@ class Game:
 			maximize_for = 'O'
 			minimize_for = 'X'
 		temp_heuristic_value = 0
-		total_heuristic_value =0
+		total_heuristic_value = 0
 
 		#Row
 		row_is_still_playable = False
@@ -305,7 +305,7 @@ class Game:
 		for i in range (0, self.board_size):
 			temp_heuristic_value = 0
 			col_is_still_playable = False
-			for j in range(self.board_size, 0, -1):
+			for j in range((self.board_size - 1), -1, -1):
 				# Makes sure there is still an empty spot to play in the row
 				if self.current_state[i][j] == '.':
 					col_is_still_playable = True
@@ -325,10 +325,12 @@ class Game:
 					break
 			if col_is_still_playable == True:
 				total_heuristic_value += temp_heuristic_value
-		return total_heuristic_value
 
-				
+		if maximize_for == 'X':
+			total_heuristic_value= (-1 * total_heuristic_value)
 
+		return  total_heuristic_value
+	
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -451,11 +453,11 @@ class Game:
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
+			print(self.heuristic_one(max=False))
 
 def main():
 	g = Game(recommend=True)
-	print(g.board_size)
-	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
 	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
 
 if __name__ == "__main__":
