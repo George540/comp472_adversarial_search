@@ -207,17 +207,49 @@ class Game:
 			self.player_turn = 'X'
 		return self.player_turn
 
-	def heuristic_one(self):
+	def heuristic_one(self, max= False):
 		'''
-		
+		Calculates consecutivity
+		|i	|i+1	|h(n)
+		---------------------
+		|X	|X		|+2
+			|.		|+1
+			|B		|+0
+			|O		|-1
+		Max = False, means X is playing
+		Max = True, means O is playing
 		'''
-		heuristic_value = 0
-		for i in range (0, self.board_size-1):
-			for j in range(0, self.board_size-1):
-				if self.current_state[i][j] == 'X':
-					heuristic_value += 1
-				if self.current_state[i][j] == 'O':
-					heuristic_value -= 1
+		maximize_for = ''
+		minimize_for = ''
+		#sets the player X or O we want to maximize for
+		if max:
+			maximize_for = 'X'
+			minimize_for = 'O'
+		else:
+			maximize_for = 'O'
+			minimize_for = 'X'
+		temp_heuristic_value = 0
+		total_heuristic_value =0
+		row_is_still_playable = False
+		for i in range (0, self.board_size):
+			temp_heuristic_value = 0
+			row_is_still_playable = False
+			for j in range(0, self.board_size):
+				# Makes sure there is still an empty spot to play in the row
+				if self.current_state[i][j] == '.':
+					row_is_still_playable = True
+				# Skips the last index, because it has no neighbour (prevents index out of bounds)
+				if j != self.board_size-1:
+					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == maximize_for:
+						temp_heuristic_value += 2
+					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == '.':
+						temp_heuristic_value += 1
+					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == 'B':
+						temp_heuristic_value += 0
+					if self.current_state[i][j] == maximize_for and self.current_state[i][j+1] == minimize_for:
+						temp_heuristic_value -= 1
+			if row_is_still_playable == False:
+				total_heuristic_value += temp_heuristic_value
 				
 
 	def minimax(self, max=False):
