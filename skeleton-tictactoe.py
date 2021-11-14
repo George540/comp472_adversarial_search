@@ -517,6 +517,13 @@ class Game:
 		return (value, x, y)
 
 	def play(self,algo=None,player_x=None,player_o=None, player_x_heuristic=True, player_o_heuristic=True):
+		'''
+		algo: Game.MINIMAX for minmax or Game.ALPHABETA
+		player_x: Game.AI for AI or Game.HUMAN
+		player_y: Game.AI for AI or Game.HUMAN
+		player_x_heuristic: True uses H1, False uses H2
+		player_o_heuristic: True uses H1, False uses H2
+		'''
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -554,7 +561,7 @@ class Game:
 def main():
 	g = Game(recommend=True)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI, player_x_heuristic=True, player_o_heuristic=False)
+	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN, player_x_heuristic=True, player_o_heuristic=False)
 
 if __name__ == "__main__":
 	main()
