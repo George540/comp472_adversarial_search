@@ -376,7 +376,7 @@ class Game:
 				temp_streak = 0
 				if (pivot_h != self.BLOCK):
 					for k in range(0, self.lineup_size):
-						if (self.current_state[i][j+k] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
+						if (self.current_state[i][j+k] == self.BLOCK or self.current_state[i][j+k] == minimize_for):
 							break
 						elif (self.current_state[i][j+k] == maximize_for):
 							temp_streak += 1
@@ -397,7 +397,7 @@ class Game:
 				temp_streak = 0
 				if (pivot_d1 != self.BLOCK):
 					for k in range(0, self.lineup_size):
-						if (self.current_state[i+k][j+k] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
+						if (self.current_state[i+k][j+k] == self.BLOCK or self.current_state[i+k][j+k] == minimize_for):
 							break
 						elif (self.current_state[i+k][j+k] == maximize_for):
 							temp_streak += 1
@@ -417,7 +417,7 @@ class Game:
 				temp_streak = 0
 				if (pivot_d2 != self.BLOCK):
 					for k in range (0, self.lineup_size):
-						if (self.current_state[i+k][j-k] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
+						if (self.current_state[i+k][j-k] == self.BLOCK or self.current_state[i+k][j-k] == minimize_for):
 							break
 						elif (self.current_state[i+k][j-k] == maximize_for):
 							temp_streak += 1
@@ -431,39 +431,32 @@ class Game:
 				
 		return heuristic_value
 
-	def minimax(self, max=False):
+	def minimax(self, max=False, depth=3, h1=False):
 		# Minimizing for 'X' and maximizing for 'O'
-		# Possible values are:
-		# -1 - win for 'X'
-		# 0  - a tie
-		# 1  - loss for 'X'
-		# We're initially setting it to 2 or -2 as worse than the worst case:
-		value = 2
-		if max:
-			value = -2
+		value = 0
 		x = None
 		y = None
-		result = self.is_end()
-		if result == 'X':
-			return (self.heuristic_one(max=False), x, y)
-		elif result == 'O':
-			return (self.heuristic_one(max=True), x, y)
-		elif result == '.':
-			return (0, x, y)
-		for i in range(0, 3):
-			for j in range(0, 3):
+
+		if (depth <= 0):
+			if h1:
+				return (self.heuristic_one(max), x, y)
+			else:
+				return (self.heuristic_two(max), x, y)
+
+		for i in range(0, self.board_size):
+			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _) = self.minimax(max=False)
-						if v > value:
+						(v, _, _) = self.minimax(max=False, depth=depth-1, h1=h1)
+						if v >= value:
 							value = v
 							x = i
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _) = self.minimax(max=True)
-						if v < value:
+						(v, _, _) = self.minimax(max=True, depth=depth-1, h1=h1)
+						if v <= value:
 							value = v
 							x = i
 							y = j
@@ -553,7 +546,6 @@ class Game:
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
-			#print(self.heuristic_one(max=False))
 
 def main():
 	g = Game(recommend=True)
