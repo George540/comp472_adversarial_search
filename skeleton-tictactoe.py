@@ -339,8 +339,10 @@ class Game:
 		#sets the player X or O we want to maximize for
 		if max:
 			maximize_for = 'X'
+			minimize_for = 'O'
 		else:
 			maximize_for = 'O'
+			minimize_for = 'X'
 
 		heuristic_value = 0
 	
@@ -348,11 +350,11 @@ class Game:
 		vertical_lineup_streak_number = 0
 		for j in range(0, self.board_size):
 			for i in range(0, self.board_size-self.lineup_size+1):
-				pivot_h = self.current_state[i][j]
+				pivot_v = self.current_state[i][j]
 				temp_streak = 0
-				if (pivot_h != self.BLOCK):
+				if (pivot_v != self.BLOCK):
 					for k in range(0, self.lineup_size):
-						if (self.current_state[i+k][j] == self.BLOCK):
+						if (self.current_state[i+k][j] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
 							break
 						elif (self.current_state[i+k][j] == maximize_for):
 							temp_streak += 1
@@ -371,7 +373,7 @@ class Game:
 				temp_streak = 0
 				if (pivot_h != self.BLOCK):
 					for k in range(0, self.lineup_size):
-						if (self.current_state[i][j+k] == self.BLOCK):
+						if (self.current_state[i][j+k] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
 							break
 						elif (self.current_state[i][j+k] == maximize_for):
 							temp_streak += 1
@@ -392,7 +394,7 @@ class Game:
 				temp_streak = 0
 				if (pivot_d1 != self.BLOCK):
 					for k in range(0, self.lineup_size):
-						if (self.current_state[i+k][j+k] == self.BLOCK):
+						if (self.current_state[i+k][j+k] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
 							break
 						elif (self.current_state[i+k][j+k] == maximize_for):
 							temp_streak += 1
@@ -412,7 +414,7 @@ class Game:
 				temp_streak = 0
 				if (pivot_d2 != self.BLOCK):
 					for k in range (0, self.lineup_size):
-						if (self.current_state[i+k][j-k] == self.BLOCK):
+						if (self.current_state[i+k][j-k] == self.BLOCK or self.current_state[i+k][j] == minimize_for):
 							break
 						elif (self.current_state[i+k][j-k] == maximize_for):
 							temp_streak += 1
