@@ -10,6 +10,26 @@ import time
 import random
 from random import randrange
 
+turn_start_time = 0
+player_time_limit = 1000
+
+def set_Turn_Start_Time():
+	global turn_start_time
+	turn_start_time = time.time()
+
+def get_turn_start_time():
+	global turn_start_time
+	turn_start_time
+	return turn_start_time
+
+def set_player_time_limit(limit):
+	global player_time_limit
+	player_time_limit = limit
+
+def get_player_time_limit():
+	global player_time_limit
+	return player_time_limit
+
 class Game:
 	'''
 	Let 
@@ -34,7 +54,7 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=7, number_of_blocks=4, lineup_size=5, recommend = True):
+	def __init__(self, board_size=4, number_of_blocks=4, lineup_size=5, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -435,6 +455,14 @@ class Game:
 		max: Chosing which player to minimize/maximize for
 		h1: True is heuristic one, False is Heuristic 2
 		'''
+		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
+			print('Time Limit Reached!')
+			if max:
+				print('O LOSES')
+				quit()
+			else:
+				print('X LOSES')
+				quit()
 		value = 1000
 		if max:
 			value = -1000
@@ -474,6 +502,14 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
+			print('Time Limit Reached!')
+			if max:
+				print('O LOSES')
+				quit()
+			else:
+				print('X LOSES')
+				quit()
 		value = 1000
 		if max:
 			value = -1000
@@ -516,14 +552,16 @@ class Game:
 							beta = value
 		return (value, x, y)
 
-	def play(self,algo=None,player_x=None,player_o=None, player_x_heuristic=True, player_o_heuristic=True):
+	def play(self,algo=None,player_x=None,player_o=None, player_x_heuristic=True, player_o_heuristic=True, depth=3):
 		'''
 		algo: Game.MINIMAX for minmax or Game.ALPHABETA
 		player_x: Game.AI for AI or Game.HUMAN
 		player_y: Game.AI for AI or Game.HUMAN
 		player_x_heuristic: True uses H1, False uses H2
 		player_o_heuristic: True uses H1, False uses H2
+		depth: the depth that minmax or alphabeta will traverse
 		'''
+		traversal_depth = depth
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -535,17 +573,19 @@ class Game:
 			if self.check_end():
 				return
 			start = time.time()
+			set_Turn_Start_Time()
 			#X is ◦ the white/hollow circle
+
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
-					(_, x, y) = self.minimax(max=False, h1=player_x_heuristic)
+					(_, x, y) = self.minimax(max=False, depth = traversal_depth, h1=player_x_heuristic)
 				else:
-					(_, x, y) = self.minimax(max=True, h1=player_o_heuristic)
+					(_, x, y) = self.minimax(max=True, depth = traversal_depth, h1=player_o_heuristic)
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
-					(m, x, y) = self.alphabeta(max=False)
+					(m, x, y) = self.alphabeta(max=False, depth = traversal_depth)
 				else:
-					(m, x, y) = self.alphabeta(max=True)
+					(m, x, y) = self.alphabeta(max=True, depth = traversal_depth)
 			end = time.time()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN)):
 					if self.recommend:
@@ -560,8 +600,9 @@ class Game:
 
 def main():
 	g = Game(recommend=True)
+	set_player_time_limit(0.6)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI, player_x_heuristic=False, player_o_heuristic=True)
+	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI, player_x_heuristic=False, player_o_heuristic=True, depth=3)
 
 if __name__ == "__main__":
 	main()
