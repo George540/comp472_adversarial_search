@@ -34,7 +34,7 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=5, number_of_blocks=4, lineup_size=4, recommend = True):
+	def __init__(self, board_size=7, number_of_blocks=4, lineup_size=5, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -467,39 +467,39 @@ class Game:
 					self.current_state[i][j] = '.'
 		return(value, x, y)
 
-	def alphabeta(self, alpha=-2, beta=2, max=False):
+	def alphabeta(self, alpha=-100, beta=100, max=False, depth=3, h1=True):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
 		# -1 - win for 'X'
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
-		value = 2
+		value = 1000
 		if max:
-			value = -2
+			value = -1000
 		x = None
 		y = None
-		result = self.is_end()
-		if result == 'X':
-			return (-1, x, y)
-		elif result == 'O':
-			return (1, x, y)
-		elif result == '.':
-			return (0, x, y)
-		for i in range(0, 3):
-			for j in range(0, 3):
+		
+		if (depth <= 0):
+			if h1:
+				return (self.heuristic_one(max), x, y)
+			else:
+				return (self.heuristic_two(max), x, y)
+		
+		for i in range(0, self.board_size):
+			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _) = self.alphabeta(alpha, beta, max=False)
-						if v > value:
+						(v, _, _) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1)
+						if v >= value:
 							value = v
 							x = i
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _) = self.alphabeta(alpha, beta, max=True)
-						if v < value:
+						(v, _, _) = self.alphabeta(alpha, beta, max=True, depth=depth-1, h1=h1)
+						if v <= value:
 							value = v
 							x = i
 							y = j
@@ -561,7 +561,7 @@ class Game:
 def main():
 	g = Game(recommend=True)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN, player_x_heuristic=True, player_o_heuristic=False)
+	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI, player_x_heuristic=False, player_o_heuristic=True)
 
 if __name__ == "__main__":
 	main()
