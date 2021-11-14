@@ -85,8 +85,8 @@ class Game:
 
 	def draw_board(self):
 		print()
-		for x in range(0, self.board_size):
-			for y in range(0, self.board_size):
+		for y in range(0, self.board_size):
+			for x in range(0, self.board_size):
 				print(F'{self.current_state[x][y]}', end="")
 			print()
 		print()
@@ -330,7 +330,102 @@ class Game:
 			total_heuristic_value= (-1 * total_heuristic_value)
 
 		return  total_heuristic_value
+				
+	def heuristic_two(self, max=False):
+		'''
+		Calculates the amount of blocks left to complete the closest winning condition
+		'''
+		maximize_for = ''
+		#sets the player X or O we want to maximize for
+		if max:
+			maximize_for = 'X'
+		else:
+			maximize_for = 'O'
+
+		heuristic_value = 0
 	
+		# Vertical
+		vertical_lineup_streak_number = 0
+		for j in range(0, self.board_size):
+			for i in range(0, self.board_size-self.lineup_size+1):
+				pivot_h = self.current_state[i][j]
+				temp_streak = 0
+				if (pivot_h != self.BLOCK):
+					for k in range(0, self.lineup_size):
+						if (self.current_state[i+k][j] == self.BLOCK):
+							break
+						elif (self.current_state[i+k][j] == maximize_for):
+							temp_streak += 1
+				if not max:
+					temp_streak *= -1
+				if (abs(temp_streak) > abs(vertical_lineup_streak_number)):
+					vertical_lineup_streak_number = temp_streak
+
+		heuristic_value = vertical_lineup_streak_number
+
+		#Horizontal
+		horizontal_lineup_streak_number = 0
+		for i in range(0, self.board_size):
+			for j in range(0, self.board_size-self.lineup_size+1):
+				pivot_h = self.current_state[i][j]
+				temp_streak = 0
+				if (pivot_h != self.BLOCK):
+					for k in range(0, self.lineup_size):
+						if (self.current_state[i][j+k] == self.BLOCK):
+							break
+						elif (self.current_state[i][j+k] == maximize_for):
+							temp_streak += 1
+				if not max:
+					temp_streak *= -1
+				if (abs(temp_streak) > abs(horizontal_lineup_streak_number)):
+					horizontal_lineup_streak_number = temp_streak
+
+		# check so far which of the two line-up types is closer to complete
+		if (abs(horizontal_lineup_streak_number) > abs(vertical_lineup_streak_number)):
+			heuristic_value = horizontal_lineup_streak_number
+
+		# Top Left -> Bottom Right Diagonals
+		main_diagonals_lineup_streak_number = 0
+		for i in range(0, self.board_size-self.lineup_size+1):
+			for j in range(0, self.board_size-self.lineup_size+1):
+				pivot_d1 = self.current_state[i][j]
+				temp_streak = 0
+				if (pivot_d1 != self.BLOCK):
+					for k in range(0, self.lineup_size):
+						if (self.current_state[i+k][j+k] == self.BLOCK):
+							break
+						elif (self.current_state[i+k][j+k] == maximize_for):
+							temp_streak += 1
+				if not max:
+					temp_streak *= -1
+				if (abs(temp_streak) > abs(main_diagonals_lineup_streak_number)):
+					main_diagonals_lineup_streak_number = temp_streak
+			
+		if (abs(main_diagonals_lineup_streak_number) > abs(heuristic_value)):
+				heuristic_value = main_diagonals_lineup_streak_number
+
+		# Top Right -> Bottom Left Diagonals
+		second_diagonals_lineup_streak_number = 0
+		for i in range(0, self.board_size-self.lineup_size):
+			for j in range(self.board_size-1, self.lineup_size-2, -1):
+				pivot_d2 = self.current_state[i][j]
+				temp_streak = 0
+				if (pivot_d2 != self.BLOCK):
+					for k in range (0, self.lineup_size):
+						if (self.current_state[i+k][j-k] == self.BLOCK):
+							break
+						elif (self.current_state[i+k][j-k] == maximize_for):
+							temp_streak += 1
+				if not max:
+					temp_streak *= -1
+				if (abs(temp_streak) > abs(second_diagonals_lineup_streak_number)):
+					second_diagonals_lineup_streak_number = temp_streak
+			
+		if (abs(second_diagonals_lineup_streak_number) > abs(heuristic_value)):
+			heuristic_value = second_diagonals_lineup_streak_number
+				
+		return heuristic_value
+
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
