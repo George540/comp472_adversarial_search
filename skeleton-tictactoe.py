@@ -8,6 +8,7 @@
 
 import time
 import random
+from random import randrange
 
 class Game:
 	'''
@@ -33,7 +34,7 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=10, number_of_blocks=3, lineup_size=3, recommend = True):
+	def __init__(self, board_size=5, number_of_blocks=4, lineup_size=4, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -328,8 +329,8 @@ class Game:
 
 		if maximize_for == 'X':
 			total_heuristic_value= (-1 * total_heuristic_value)
-
-		return  total_heuristic_value
+		#print(total_heuristic_value)
+		return total_heuristic_value
 				
 	def heuristic_two(self, max=False):
 		'''
@@ -429,8 +430,14 @@ class Game:
 		return heuristic_value
 
 	def minimax(self, max=False, depth=3, h1=True):
-		# Minimizing for 'X' and maximizing for 'O'
-		value = 0
+		'''
+		self: game object with all attributes
+		max: Chosing which player to minimize/maximize for
+		h1: True is heuristic one, False is Heuristic 2
+		'''
+		value = 1000
+		if max:
+			value = -1000
 		x = None
 		y = None
 
@@ -458,7 +465,7 @@ class Game:
 							x = i
 							y = j
 					self.current_state[i][j] = '.'
-		return (value, x, y)
+		return(value, x, y)
 
 	def alphabeta(self, alpha=-2, beta=2, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
@@ -509,7 +516,7 @@ class Game:
 							beta = value
 		return (value, x, y)
 
-	def play(self,algo=None,player_x=None,player_o=None):
+	def play(self,algo=None,player_x=None,player_o=None, player_x_heuristic=True, player_o_heuristic=True):
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -524,9 +531,9 @@ class Game:
 			#X is ◦ the white/hollow circle
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
-					(_, x, y) = self.minimax(max=False)
+					(_, x, y) = self.minimax(max=False, h1=player_x_heuristic)
 				else:
-					(_, x, y) = self.minimax(max=True)
+					(_, x, y) = self.minimax(max=True, h1=player_o_heuristic)
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
 					(m, x, y) = self.alphabeta(max=False)
@@ -547,7 +554,7 @@ class Game:
 def main():
 	g = Game(recommend=True)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.HUMAN,player_o=Game.AI)
+	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI, player_x_heuristic=True, player_o_heuristic=False)
 
 if __name__ == "__main__":
 	main()
