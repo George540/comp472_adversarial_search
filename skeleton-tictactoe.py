@@ -33,7 +33,7 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=3, number_of_blocks=3, lineup_size=3, recommend = True):
+	def __init__(self, board_size=10, number_of_blocks=3, lineup_size=3, recommend = True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.lineup_size = lineup_size
@@ -240,7 +240,7 @@ class Game:
 				# Makes sure there is still an empty spot to play in the row
 				if self.current_state[i][j] == '.':
 					row_is_still_playable = True
-				if self.current_state[i][j] == 'X':
+				if self.current_state[i][j] == maximize_for:
 					temp_heuristic_value += 1
 				# Skips the last index, because it has no neighbour (prevents index out of bounds)
 				if j != self.board_size-1:
@@ -263,7 +263,7 @@ class Game:
 				# Makes sure there is still an empty spot to play in the row
 				if self.current_state[i][j] == '.':
 					col_is_still_playable = True
-				if self.current_state[i][j] == 'X':
+				if self.current_state[i][j] == maximize_for:
 					temp_heuristic_value += 1
 				# Skips the last index, because it has no neighbour (prevents index out of bounds)
 				if i != self.board_size-1:
@@ -286,7 +286,7 @@ class Game:
 				# Makes sure there is still an empty spot to play in the row
 				if self.current_state[i][j] == '.':
 					col_is_still_playable = True
-				if self.current_state[i][j] == 'X':
+				if self.current_state[i][j] == maximize_for:
 					temp_heuristic_value += 1
 				# Skips diagonals that are too small to win with (i.e a diagonal of size 2, in a game where you need 3 in a row to win)
 				if j <= self.board_size - self.lineup_size and i <= self.board_size - self.lineup_size:
@@ -309,13 +309,10 @@ class Game:
 				# Makes sure there is still an empty spot to play in the row
 				if self.current_state[i][j] == '.':
 					col_is_still_playable = True
-				if self.current_state[i][j] == 'X':
+				if self.current_state[i][j] == maximize_for:
 					temp_heuristic_value += 1
 				# Skips diagonals that are too small to win with (i.e a diagonal of size 2, in a game where you need 3 in a row to win)
-				if j >= self.lineup_size-1:
-					print('i: '+ str(i) + 'j: ' +str(j))
-					print(self.current_state[i][j])
-					print(self.current_state[i+1][j-1])
+				if i < (self.lineup_size -1) and j >= self.lineup_size-1:
 					if self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == maximize_for:
 						temp_heuristic_value += 2
 					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == '.':
@@ -431,7 +428,7 @@ class Game:
 				
 		return heuristic_value
 
-	def minimax(self, max=False, depth=3, h1=False):
+	def minimax(self, max=False, depth=3, h1=True):
 		# Minimizing for 'X' and maximizing for 'O'
 		value = 0
 		x = None
@@ -550,7 +547,7 @@ class Game:
 def main():
 	g = Game(recommend=True)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI)
+	g.play(algo=Game.MINIMAX,player_x=Game.HUMAN,player_o=Game.AI)
 
 if __name__ == "__main__":
 	main()
