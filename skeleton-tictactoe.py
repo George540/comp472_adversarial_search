@@ -54,11 +54,20 @@ class Game:
 	AI = 3
 	BLOCK = 'B'
 	
-	def __init__(self, board_size=4, number_of_blocks=4, lineup_size=5, recommend = True):
+	def __init__(self, board_size=3, number_of_blocks=2, block_coordinates = [], 
+				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, recommend=True):
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
+		self.block_coordinates = block_coordinates
 		self.lineup_size = lineup_size
+		self.d1 = d1
+		self.d2 = d2
+		self.time_threshold = time_threshold
 		self.recommend = recommend
+		self.a = a
+		self.p1 = p1
+		self.p2 = p2
+		self.h1 = h1
 		self.initialize_game()
 		
 		#Checking board_size values to be within 3 and 10.
@@ -99,8 +108,13 @@ class Game:
 		
 	def initialize_game(self):
 		self.current_state = [['.' for i in range(self.board_size)] for j in range(self.board_size)]
-		for i in range(self.number_of_blocks):
-			self.current_state[random.randint(0,self.board_size-1)][random.randint(0,self.board_size-1)] = self.BLOCK
+		if (self.block_coordinates == []):
+			for i in range(self.number_of_blocks):
+				self.current_state[random.randint(0,self.board_size-1)][random.randint(0,self.board_size-1)] = self.BLOCK
+		else:
+			for i in range(self.number_of_blocks):
+				for coord in self.block_coordinates:
+					self.current_state[coord[0]][coord[1]] = self.BLOCK
 		# Player X always plays first
 		self.player_turn = 'X'
 
@@ -449,7 +463,7 @@ class Game:
 				
 		return heuristic_value
 
-	def minimax(self, max=False, depth=3, h1=True):
+	def minimax(self, max, depth, h1):
 		'''
 		self: game object with all attributes
 		max: Chosing which player to minimize/maximize for
@@ -552,7 +566,7 @@ class Game:
 							beta = value
 		return (value, x, y)
 
-	def play(self,algo=None,player_x=None,player_o=None, player_x_heuristic=True, player_o_heuristic=True, depth=3):
+	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True):
 		'''
 		algo: Game.MINIMAX for minmax or Game.ALPHABETA
 		player_x: Game.AI for AI or Game.HUMAN
@@ -561,7 +575,6 @@ class Game:
 		player_o_heuristic: True uses H1, False uses H2
 		depth: the depth that minmax or alphabeta will traverse
 		'''
-		traversal_depth = depth
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -578,14 +591,14 @@ class Game:
 
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
-					(_, x, y) = self.minimax(max=False, depth = traversal_depth, h1=player_x_heuristic)
+					(_, x, y) = self.minimax(max=False, depth=d1, h1=h1)
 				else:
-					(_, x, y) = self.minimax(max=True, depth = traversal_depth, h1=player_o_heuristic)
+					(_, x, y) = self.minimax(max=True, depth=d2, h1=h1)
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
-					(m, x, y) = self.alphabeta(max=False, depth = traversal_depth)
+					(m, x, y) = self.alphabeta(max=False, depth=d1, h1=h1)
 				else:
-					(m, x, y) = self.alphabeta(max=True, depth = traversal_depth)
+					(m, x, y) = self.alphabeta(max=True, depth=d2, h1=h1)
 			end = time.time()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN)):
 					if self.recommend:
@@ -599,11 +612,86 @@ class Game:
 			self.switch_player()
 
 def main():
+	inputs = menu()
 	g = Game(recommend=True)
 	set_player_time_limit(0.6)
+	if (inputs != []):
+		g = Game(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6], inputs[7], inputs[8], inputs[9], inputs[10], recommend=True)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI, player_x_heuristic=False, player_o_heuristic=True, depth=3)
+	g.play(algo=g.a, player_x=g.p1, player_o=g.p2, d1=g.d1, d2=g.d2, h1=g.h1)
+
+def menu():
+	print('\n---------- Welcome to Team Oranges Mini-Assignment 1 for COMP 472 ----------\n')
+
+	print('Would you like to use default values?')
+	print('Defaults: AI vs Human, 3x3 grid, Traversal Depth = 3, Traversal Algorith = ALPHABETA, time threshold - 5s')
+	defaults = str(input('\nPlease select one of the following options: (y/n)'))
+	if (defaults == 'y'):
+		print('Defaults chosen. Program proceeding...\n')
+		return []
+	elif (defaults == 'n'):
+		print('User will enter custom parameters. Program proceeding...\n')
+
+	grid_size = int(input('\nEnter grid size (NxN), between 3 and 10: '))
+
+	choice = str(input('\nRandomized blocks or enter them manually? (y/n)'))
+	if (choice == 'y'):
+		print('Randomized blocks selected\n')
+	elif (choice == 'n'):
+		print('Manually entering blocks\n')
+
+	number_of_blocks = int(input('\nEnter number of blocks, between 0 and 2n: '))
+	
+	block_coordinates = [None] * number_of_blocks
+	if (choice == 'n'):
+		for i in range(0, number_of_blocks):
+			x_cord = int(input('\nEnter X coordinate of block ' + str(i+1) + ' (Must be valid): '))
+			y_cord = int(input('\nEnter Y coordinate of block ' + str(i+1) + ' (Must be valid): '))
+			block_coordinates[i] = (x_cord, y_cord)
+
+	lineup_size = int(input('\nEnter the line-up size, between 3 and n: '))
+
+	d1 = int(input('\nEnter adversarial search depth d1: '))
+	d2 = int(input('\nEnter adversarial search depth d2: '))
+	t = float(input('\nEnter maximum allowed time (in seconds) for AI to return a move (must be above 0): '))
+
+	minimax = True
+	choice = str(input('\nMINIMAX or ALPHABETA? (m/a)'))
+	if (choice == 'm'):
+		print('MINIMAX selected\n')
+		a = Game.MINIMAX
+	elif (choice == 'a'):
+		print('ALPHABETA selected\n')
+		a = Game.ALPHABETA
+
+	choice = str(input('\nIs p1 AI or HUMAN? (a/h):'))
+	player1 = Game.AI
+	if (choice == 'a'):
+		print('P1 is AI\n')
+		player1 = Game.AI
+	elif (choice == 'h'):
+		print('P1 is human\n')
+		player1 = Game.HUMAN
+	
+	choice = str(input('\nIs p2 AI or HUMAN? (a/h):'))
+	player2 = Game.AI
+	if (choice == 'a'):
+		print('P2 is AI\n')
+		player2 = Game.AI
+	elif (choice == 'h'):
+		print('P2 is human\n')
+		player2 = Game.HUMAN
+
+	choice = str(input('\nHeuristic 1 or Heuristic 2? (1/2):'))
+	h1 = True
+	if (choice == '1'):
+		print('H1 chosen\n')
+		h1 = True
+	elif (choice == '2'):
+		print('H2 chosen\n')
+		h1 = False
+
+	return (grid_size, number_of_blocks, block_coordinates, lineup_size, d1, d2, t, a, player1, player2, h1)
 
 if __name__ == "__main__":
 	main()
-
