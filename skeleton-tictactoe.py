@@ -313,6 +313,9 @@ class Game:
 					temp_heuristic_value += 1
 				# Skips diagonals that are too small to win with (i.e a diagonal of size 2, in a game where you need 3 in a row to win)
 				if j >= self.lineup_size-1:
+					print('i: '+ str(i) + 'j: ' +str(j))
+					print(self.current_state[i][j])
+					print(self.current_state[i+1][j-1])
 					if self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == maximize_for:
 						temp_heuristic_value += 2
 					elif self.current_state[i][j] == maximize_for and self.current_state[i+1][j-1] == '.':
@@ -442,9 +445,9 @@ class Game:
 		y = None
 		result = self.is_end()
 		if result == 'X':
-			return (-1, x, y)
+			return (self.heuristic_one(max=False), x, y)
 		elif result == 'O':
-			return (1, x, y)
+			return (self.heuristic_one(max=True), x, y)
 		elif result == '.':
 			return (0, x, y)
 		for i in range(0, 3):
@@ -550,12 +553,12 @@ class Game:
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
-			print(self.heuristic_one(max=False))
+			#print(self.heuristic_one(max=False))
 
 def main():
 	g = Game(recommend=True)
 	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
+	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI)
 
 if __name__ == "__main__":
 	main()
