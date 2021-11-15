@@ -135,8 +135,14 @@ class Game:
 	
 	def __init__(self, board_size=3, number_of_blocks=2, block_coordinates = [], 
 				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, h2=True, recommend=True):
+		'''
+		Constructor of game object takes the board parameters and ensures that they are within value requirements.
 
-		#SAMPLE GAME TRACE WRITING HAPPENS HERE
+		board_size (int): represents the NxN board size min 3 and max 10
+		number_of_blocks (int): number of blocks that will be placed on the board
+		block_coordinates (list): 2d coordinates of block placement, if empty, blocks are randomly assigned
+		
+		'''
 		temp_string = 'gameTrace-'+str(board_size)+str(number_of_blocks)+str(lineup_size)+str(time_threshold)+'.txt'
 		print(temp_string)
 		gameTraceFile = open(temp_string, "w")
@@ -613,20 +619,16 @@ class Game:
 		h1: True is heuristic one, False is Heuristic 2
 		'''
 		global global_flag
-		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
-			print('Time Limit Reached!')
-			if max:
-				print('O LOSES')
-				quit()
-			else:
-				print('X LOSES')
-				quit()
 		value = 1000
 		if max:
 			value = -1000
 		x = None
 		y = None
-
+		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit()-0.01:
+			if h1:
+				return (self.heuristic_one(max), x, y)
+			else:
+				return (self.heuristic_two(max), x, y)
 		if (depth <= 0):
 			if h1:
 				return (self.heuristic_one(max), x, y)

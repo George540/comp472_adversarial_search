@@ -5,12 +5,12 @@ Player 2: d=3 a=True
 
 1 games
 
-Total wins for heuristic e1: 0 (0.0%) (Consecutivity)
+Total wins for heuristic e1: 1 (100.0%) (Consecutivity)
 Total wins for heuristic e2: 0 (0.0%) (Closest Winning Condition)
 
-i	Average evaluation time: 0.04s
-ii	Total heuristic evaluations: 3393
-iii	Evaluations by depth: {5: 9643, 4: 63388, 3: 310011, 2: 1193796, 1: 3439920}
-iv	Average evaluation depth: 2.41
+i	Average evaluation time: 1.01s
+ii	Total heuristic evaluations: 2334811
+iii	Evaluations by depth: {4: 52766861, 3: 460404987, 2: 11736702558, 1: 307848126729}
+iv	Average evaluation depth: 1.04
 v	Average recursion depth: x
-vi	Average moves per game: 7.0
+vi	Average moves per game: 9.0
