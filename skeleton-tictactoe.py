@@ -321,6 +321,7 @@ class Game:
 
 	# def check_end checks(self) checks if the game has finished, returns winner, tie message, or None if game is still on going
 	def check_end(self):
+		global evaluation_time
 		self.result = self.is_end()
 		# Printing the appropriate message if the game has ended
 		if self.result != None:
@@ -340,8 +341,8 @@ class Game:
 				print("It's a tie!")
 
 			#6b
-			print('6(b)i\t Average Evaluation Time: '+'s\n')
-			self.gameTraceFile.write('6(b)i\t Average Evaluation Time: '+'s\n')
+			print('6(b)i\t Average Evaluation Time: '+str(round(sum(evaluation_time)/len(evaluation_time), 2))+'s\n')
+			self.gameTraceFile.write('6(b)i\t Average Evaluation Time: '+str(round(sum(evaluation_time)/len(evaluation_time), 2))+'s\n')
 			print('6(b)ii\t Total heuristic evaluations: '+ str(get_Game_Eval_Counter()) +'\n')
 			self.gameTraceFile.write('6(b)ii\t Total heuristic evaluations: '+ str(get_Game_Eval_Counter()) +'\n')
 			print('6(b)iii\t Evaluations by depth: '+'\n')
