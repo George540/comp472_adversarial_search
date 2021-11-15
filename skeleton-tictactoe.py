@@ -616,12 +616,15 @@ def main():
 	g = Game(recommend=True)
 	set_player_time_limit(0.6)
 	if (inputs != []):
+		f = open("Scoreboard.txt", "w")
+		loop_code = input('Would you like to loop these settings 10 times and output the results? (y/n)')
 		g = Game(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6], inputs[7], inputs[8], inputs[9], inputs[10], recommend=True)
-	#g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=g.a, player_x=g.p1, player_o=g.p2, d1=g.d1, d2=g.d2, h1=g.h1)
+	f.write()
+	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+	#g.play(algo=g.a, player_x=g.p1, player_o=g.p2, d1=g.d1, d2=g.d2, h1=g.h1)
 
 def menu():
-	print('\n---------- Welcome to Team Oranges Mini-Assignment 1 for COMP 472 ----------\n')
+	print('\n---------- Welcome to Team Oranges Mini-Assignment 2 for COMP 472 ----------\n')
 
 	print('Would you like to use default values?')
 	print('Defaults: AI vs Human, 3x3 grid, Traversal Depth = 3, Traversal Algorith = ALPHABETA, time threshold - 5s')
