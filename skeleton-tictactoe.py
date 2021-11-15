@@ -20,6 +20,10 @@ average_recusrion_depth = []
 total_moves = []
 eval_counter = 0
 total_eval_counter_per_game = 0
+total_evals_per_session = 0
+total_moves_per_session = 0
+total_wins_for_h1_PS = 0
+total_wins_for_h2_PS = 0
 
 def increment_Evaluation_Counter():
 	global eval_counter
@@ -44,6 +48,46 @@ def get_Game_Eval_Counter():
 def reset_Game_Eval_Counter():
 	global total_eval_counter_per_game
 	total_eval_counter_per_game = 0
+
+def increment_Total_Eval_Counter_PS(x):
+	global total_evals_per_session
+	total_evals_per_session += x
+
+def get_Total_Eval_Counter_PS():
+	global total_evals_per_session
+	return total_evals_per_session
+
+def reset_Total_Eval_Counter_PS():
+	global total_evals_per_session
+	total_evals_per_session = 0
+
+def increment_Moves_PS(x):
+	global total_moves_per_session
+	total_moves_per_session+= x
+
+def get_Total_Moves_PS():
+	global total_moves_per_session
+	return total_moves_per_session
+
+def reset_Moves_PS():
+	global total_moves_per_session
+	total_moves_per_session = 0
+
+def increment_Win_For_H1():
+	global total_wins_for_h1_PS
+	total_wins_for_h1_PS+= 1
+
+def get_Win_For_H1():
+	global total_wins_for_h1_PS
+	return total_wins_for_h1_PS
+
+def increment_Win_For_H2():
+	global total_wins_for_h2_PS
+	total_wins_for_h2_PS+= 1
+
+def get_Win_For_H2():
+	global total_wins_for_h2_PS
+	return total_wins_for_h2_PS
 
 def set_Turn_Start_Time():
 	global turn_start_time
@@ -282,8 +326,16 @@ class Game:
 		if self.result != None:
 			if self.result == 'X':
 				print('The winner is X!')
+				if(self.h1==True):
+					increment_Win_For_H1()
+				else:
+					increment_Win_For_H2()
 			elif self.result == 'O':
 				print('The winner is O!')
+				if(self.h2==True):
+					increment_Win_For_H1()
+				else:
+					increment_Win_For_H2()
 			elif self.result == '.':
 				print("It's a tie!")
 
@@ -300,7 +352,9 @@ class Game:
 			self.gameTraceFile.write('6(b)v\t Average recursion depth: '+'\n')
 			print('6(b)vi\t Total moves: '+str(self.turncount-1)+'\n')
 			self.gameTraceFile.write('6(b)vi\t Total moves: '+str(self.turncount-1)+'\n')
+			increment_Moves_PS(self.turncount - 1)
 			self.turncount = 0
+			increment_Total_Eval_Counter_PS(get_Game_Eval_Counter())
 			reset_Game_Eval_Counter()
 			self.initialize_game()
 		return self.result
@@ -748,7 +802,17 @@ def main():
 		scoreboardFile.write('n='+ str(inputs[0]) +' b='+str(inputs[1])+' s='+str(inputs[3])+' t='+str(inputs[6])+'\n\n')
 		scoreboardFile.write('Player 1: d='+str(inputs[4])+' a='+str(inputs[7])+'\n')
 		scoreboardFile.write('Player 2: d='+str(inputs[5])+' a='+str(inputs[7])+'\n\n')
-		scoreboardFile.write(str(loop_code)+' games')
+		scoreboardFile.write(str(loop_code)+' games'+'\n\n')
+		scoreboardFile.write('Total wins for heuristic e1: '+ str(get_Win_For_H1()) +' ('+str(round(100 * (get_Win_For_H1() / loop_code), 2))+'%) (Consecutivity)\n')
+		scoreboardFile.write('Total wins for heuristic e2: '+ str(get_Win_For_H2()) +' ('+str(round(100 * (get_Win_For_H2() / loop_code), 2))+'%) (Closest Winning Condition)\n\n')
+		scoreboardFile.write('i\tAverage evaluation time: '+ 'x' +'s\n')
+		scoreboardFile.write('ii\tTotal heuristic evaluations: '+ str(get_Total_Eval_Counter_PS()) +'\n')
+		scoreboardFile.write('iii\tEvaluations by depth: '+ 'x' +'\n')
+		scoreboardFile.write('iv\tAverage evaluation depth: '+ 'x' +'\n')
+		scoreboardFile.write('v\tAverage recursion depth: '+ 'x' +'\n')
+		scoreboardFile.write('vi\tAverage moves per game: '+ str(round(get_Total_Moves_PS() / loop_code, 2)) +'\n')
+		reset_Total_Eval_Counter_PS()
+		reset_Moves_PS()
 
 	else:
 		loop_code = int(input('How many times would you like to run the game?\n'))
@@ -759,7 +823,17 @@ def main():
 		scoreboardFile.write('n='+ str(3) +' b='+str(2)+' s='+str(3)+' t='+str(5)+'\n\n')
 		scoreboardFile.write('Player 1: d='+str(3)+' a='+str(True)+'\n')
 		scoreboardFile.write('Player 2: d='+str(3)+' a='+str(True)+'\n\n')
-		scoreboardFile.write(str(loop_code)+' games')
+		scoreboardFile.write(str(loop_code)+' games'+'\n\n')
+		scoreboardFile.write('Total wins for heuristic e1: '+ str(get_Win_For_H1()) +' ('+str(round(100 * (get_Win_For_H1() / loop_code), 2)) +'%) (Consecutivity)\n')
+		scoreboardFile.write('Total wins for heuristic e2: '+ str(get_Win_For_H2()) +' ('+str(round(100 * (get_Win_For_H2() / loop_code), 2)) +'%) (Closest Winning Condition)\n\n')
+		scoreboardFile.write('i\tAverage evaluation time: '+ 'x' +'s\n')
+		scoreboardFile.write('ii\tTotal heuristic evaluations: '+ str(get_Total_Eval_Counter_PS()) +'\n')
+		scoreboardFile.write('iii\tEvaluations by depth: '+ 'x' +'\n')
+		scoreboardFile.write('iv\tAverage evaluation depth: '+ 'x' +'\n')
+		scoreboardFile.write('v\tAverage recursion depth: '+ 'x' +'\n')
+		scoreboardFile.write('vi\tAverage moves per game: '+ str(round(get_Total_Moves_PS() / loop_code, 2)) +'\n')
+		reset_Total_Eval_Counter_PS()
+		reset_Moves_PS()
 
 def menu():
 	print('\n---------- Welcome to Team Oranges Mini-Assignment 2 for COMP 472 ----------\n')
