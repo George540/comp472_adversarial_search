@@ -13,6 +13,13 @@ from random import randrange
 turn_start_time = 0
 player_time_limit = 1000
 
+evaluation_time = []
+heuristic_evaluation = []
+evaluations_by_depth = []
+average_recusrion_depth = []
+total_moves = []
+
+
 def set_Turn_Start_Time():
 	global turn_start_time
 	turn_start_time = time.time()
@@ -29,6 +36,8 @@ def set_player_time_limit(limit):
 def get_player_time_limit():
 	global player_time_limit
 	return player_time_limit
+
+
 
 class Game:
 	'''
@@ -47,7 +56,6 @@ class Game:
 	# board_size
 	# number_of_blocks
 	# lineup_size
-
 	MINIMAX = 0
 	ALPHABETA = 1
 	HUMAN = 2
@@ -55,7 +63,25 @@ class Game:
 	BLOCK = 'B'
 	
 	def __init__(self, board_size=3, number_of_blocks=2, block_coordinates = [], 
-				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, recommend=True):
+				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, h2=False, recommend=True):
+
+		#SAMPLE GAME TRACE WRITING HAPPENS HERE
+		temp_string = 'gameTrace-'+str(board_size)+str(number_of_blocks)+str(lineup_size)+str(time_threshold)+''
+		gameTraceFile = open(temp_string, "w")
+		self.gameTraceFile = gameTraceFile
+		gameTraceFile.write('n='+str(board_size)+' b='+str(number_of_blocks)+' s='+str(lineup_size)+' t='+str(time_threshold)+'\n')
+		gameTraceFile.write('blocs=('+str(block_coordinates)+')\n\n')
+		if h1:
+			gameTraceFile.write('Player 1: '+ str(p1) +' d='+str(d1)+' a='+str(h1)+' e1 (Consecutivity)\n')
+		else:
+			gameTraceFile.write('Player 1: '+ str(p1) +' d='+str(d1)+' a='+str(h1)+' e2 (Closest Winning Condition)\n')
+		if h2:
+			gameTraceFile.write('Player 2: '+ str(p2) +' d='+str(d2)+' a='+str(h2)+' e1 (Consecutivity)\n')
+		else:
+			gameTraceFile.write('Player 2: '+ str(p2) +' d='+str(d2)+' a='+str(h2)+' e2 (Closest Winning Condition)\n')
+		gameTraceFile.write('\n')
+		
+		self.turncount = 0
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
 		self.block_coordinates = block_coordinates
@@ -68,6 +94,7 @@ class Game:
 		self.p1 = p1
 		self.p2 = p2
 		self.h1 = h1
+		self.h2 = h2
 		self.initialize_game()
 		
 		#Checking board_size values to be within 3 and 10.
@@ -120,11 +147,25 @@ class Game:
 
 	def draw_board(self):
 		print()
+		self.gameTraceFile.write('\n')
+		for i in range(self.board_size):
+			self.gameTraceFile.write('   '+str(i))
+		if self.turncount > 0:
+			self.gameTraceFile.write('\t(MOVE #'+str(self.turncount)+')')
+		self.turncount +=1
+		self.gameTraceFile.write('\n  +')
+		for i in range(self.board_size):
+			self.gameTraceFile.write('----')
+		self.gameTraceFile.write('\n')
 		for y in range(0, self.board_size):
+			self.gameTraceFile.write(str(y)+'|')
 			for x in range(0, self.board_size):
 				print(F'{self.current_state[x][y]}', end="")
+				self.gameTraceFile.write('  '+str(self.current_state[x][y]))
 			print()
+			self.gameTraceFile.write('\n')
 		print()
+		self.gameTraceFile.write('\n')
 		
 	def is_valid(self, px, py):
 		'''
@@ -566,7 +607,7 @@ class Game:
 							beta = value
 		return (value, x, y)
 
-	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True):
+	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True, h2=True):
 		'''
 		algo: Game.MINIMAX for minmax or Game.ALPHABETA
 		player_x: Game.AI for AI or Game.HUMAN
@@ -575,6 +616,8 @@ class Game:
 		player_o_heuristic: True uses H1, False uses H2
 		depth: the depth that minmax or alphabeta will traverse
 		'''
+		global evaluation_time
+		global heuristic_evaluation
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -593,21 +636,41 @@ class Game:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False, depth=d1, h1=h1)
 				else:
-					(_, x, y) = self.minimax(max=True, depth=d2, h1=h1)
+					(_, x, y) = self.minimax(max=True, depth=d2, h1=h2)
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
 					(m, x, y) = self.alphabeta(max=False, depth=d1, h1=h1)
 				else:
-					(m, x, y) = self.alphabeta(max=True, depth=d2, h1=h1)
+					(m, x, y) = self.alphabeta(max=True, depth=d2, h1=h2)
 			end = time.time()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN)):
 					if self.recommend:
-						print(F'Evaluation time: {round(end - start, 7)}s')
+						self.gameTraceFile.write('\n')
+						self.gameTraceFile.write('Player '+str(self.player_turn)+' under Human Control plays: x='+str(x)+', y='+str(y)+'\n')
+						print(F'Player {self.player_turn} under Human Control plays: x = {x}, y = {y}')
+						self.gameTraceFile.write('\n')
+						print(F'i\tEvaluation time: {round(end - start, 7)}s')
+						evaluation_time.append(round(end - start, 7))
+						print(F'ii\tHeuristic Evaluation: {m}')
+						heuristic_evaluation.append(m)
+						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(m)+'\n')
+						print(F'iii\tEvaluations by depth: ') #NOT FINISHED
+						print(F'iv\tAverage evalution depth ') #Not FINISHED
+						print(F'iv\tAverage Recursion depth ') #NOT FINISHED
 						print(F'Recommended move: x = {x}, y = {y}')
+
 					(x,y) = self.input_move()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI)):
-						print(F'Evaluation time: {round(end - start, 7)}s')
+						self.gameTraceFile.write('\n')
+						self.gameTraceFile.write('Player '+str(self.player_turn)+' under AI Control plays: x='+str(x)+', y='+str(y)+'\n')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
+						self.gameTraceFile.write('\n')
+						print(F'i\tEvaluation time: {round(end - start, 7)}s')
+						self.gameTraceFile.write('i\tEvaluation time: '+str(round(end - start, 7))+'\n')
+						evaluation_time.append(round(end - start, 7))
+						print(F'ii\tHeuristic Evaluation: {m}')
+						heuristic_evaluation.append(m)
+						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(m)+'\n')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
 
@@ -616,12 +679,20 @@ def main():
 	g = Game(recommend=True)
 	set_player_time_limit(0.6)
 	if (inputs != []):
-		f = open("Scoreboard.txt", "w")
-		loop_code = input('Would you like to loop these settings 10 times and output the results? (y/n)')
-		g = Game(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6], inputs[7], inputs[8], inputs[9], inputs[10], recommend=True)
-	f.write()
-	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	#g.play(algo=g.a, player_x=g.p1, player_o=g.p2, d1=g.d1, d2=g.d2, h1=g.h1)
+		loop_code = input('How many times would you like to run the game?\n')
+		g = Game(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6], inputs[7], inputs[8], inputs[9], inputs[10], inputs[11], recommend=True)
+		for i in range(loop_code):
+			g.play(algo=g.a, player_x=g.p1, player_o=g.p2, d1=g.d1, d2=g.d2, h1=g.h1, h2=g.h2)
+
+		#SCOREBOARD FILE WRITING HAPPENS HERE!!!!
+		scoreboardFile = open("Scoreboard.txt", "w")
+		scoreboardFile.write('n='+ str(inputs[0]) +' b='+str(inputs[1])+' s='+str(inputs[3])+' t='+str(inputs[6])+'\n\n')
+		scoreboardFile.write('Player 1: d='+str(inputs[4])+' a='+str(inputs[7])+'\n')
+		scoreboardFile.write('Player 2: d='+str(inputs[5])+' a='+str(inputs[7])+'\n\n')
+		scoreboardFile.write(str(loop_code)+' games')
+
+	else:
+		g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
 
 def menu():
 	print('\n---------- Welcome to Team Oranges Mini-Assignment 2 for COMP 472 ----------\n')
@@ -685,7 +756,7 @@ def menu():
 		print('P2 is human\n')
 		player2 = Game.HUMAN
 
-	choice = str(input('\nHeuristic 1 or Heuristic 2? (1/2):'))
+	choice = str(input('\nPlayer 1 will use Heuristic 1 or Heuristic 2? (1/2):'))
 	h1 = True
 	if (choice == '1'):
 		print('H1 chosen\n')
@@ -694,7 +765,16 @@ def menu():
 		print('H2 chosen\n')
 		h1 = False
 
-	return (grid_size, number_of_blocks, block_coordinates, lineup_size, d1, d2, t, a, player1, player2, h1)
+	choice = str(input('\nPlayer 2 will use Heuristic 1 or Heuristic 2? (1/2):'))
+	h2 = True
+	if (choice == '1'):
+		print('H1 chosen\n')
+		h2 = True
+	elif (choice == '2'):
+		print('H2 chosen\n')
+		h2 = False
+
+	return (grid_size, number_of_blocks, block_coordinates, lineup_size, d1, d2, t, a, player1, player2, h1, h2)
 
 if __name__ == "__main__":
 	main()
