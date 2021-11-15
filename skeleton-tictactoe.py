@@ -18,7 +18,19 @@ heuristic_evaluation = []
 evaluations_by_depth = []
 average_recusrion_depth = []
 total_moves = []
+eval_counter = 0
 
+def increment_Evaluation_Counter():
+	global eval_counter
+	eval_counter += 1
+
+def reset_Evaluation_Counter():
+	global eval_counter
+	eval_counter = 0
+
+def get_Evaluation_Counter():
+	global eval_counter
+	return eval_counter
 
 def set_Turn_Start_Time():
 	global turn_start_time
@@ -36,8 +48,6 @@ def set_player_time_limit(limit):
 def get_player_time_limit():
 	global player_time_limit
 	return player_time_limit
-
-
 
 class Game:
 	'''
@@ -63,7 +73,7 @@ class Game:
 	BLOCK = 'B'
 	
 	def __init__(self, board_size=3, number_of_blocks=2, block_coordinates = [], 
-				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, h2=False, recommend=True):
+				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, h2=True, recommend=True):
 
 		#SAMPLE GAME TRACE WRITING HAPPENS HERE
 		temp_string = 'gameTrace-'+str(board_size)+str(number_of_blocks)+str(lineup_size)+str(time_threshold)+''
@@ -80,7 +90,7 @@ class Game:
 		else:
 			gameTraceFile.write('Player 2: '+ str(p2) +' d='+str(d2)+' a='+str(h2)+' e2 (Closest Winning Condition)\n')
 		gameTraceFile.write('\n')
-		
+
 		self.turncount = 0
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
@@ -295,6 +305,7 @@ class Game:
 		Max = False, means X is playing
 		Max = True, means O is playing
 		'''
+		increment_Evaluation_Counter()
 		maximize_for = ''
 		minimize_for = ''
 		#sets the player X or O we want to maximize for
@@ -404,13 +415,13 @@ class Game:
 
 		if maximize_for == 'X':
 			total_heuristic_value= (-1 * total_heuristic_value)
-		#print(total_heuristic_value)
 		return total_heuristic_value
 				
 	def heuristic_two(self, max=False):
 		'''
 		Calculates the amount of blocks left to complete the closest winning condition
 		'''
+		increment_Evaluation_Counter()
 		maximize_for = ''
 		#sets the player X or O we want to maximize for
 		if max:
@@ -501,7 +512,6 @@ class Game:
 			
 		if (abs(second_diagonals_lineup_streak_number) > abs(heuristic_value)):
 			heuristic_value = second_diagonals_lineup_streak_number
-				
 		return heuristic_value
 
 	def minimax(self, max, depth, h1):
@@ -618,6 +628,7 @@ class Game:
 		'''
 		global evaluation_time
 		global heuristic_evaluation
+		
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -651,9 +662,9 @@ class Game:
 						self.gameTraceFile.write('\n')
 						print(F'i\tEvaluation time: {round(end - start, 7)}s')
 						evaluation_time.append(round(end - start, 7))
-						print(F'ii\tHeuristic Evaluation: {m}')
+						print('ii\tHeuristic Evaluation:', get_Evaluation_Counter())
 						heuristic_evaluation.append(m)
-						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(m)+'\n')
+						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(get_Evaluation_Counter())+'\n')
 						print(F'iii\tEvaluations by depth: ') #NOT FINISHED
 						print(F'iv\tAverage evalution depth ') #Not FINISHED
 						print(F'iv\tAverage Recursion depth ') #NOT FINISHED
@@ -668,10 +679,11 @@ class Game:
 						print(F'i\tEvaluation time: {round(end - start, 7)}s')
 						self.gameTraceFile.write('i\tEvaluation time: '+str(round(end - start, 7))+'\n')
 						evaluation_time.append(round(end - start, 7))
-						print(F'ii\tHeuristic Evaluation: {m}')
-						heuristic_evaluation.append(m)
-						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(m)+'\n')
+						print(F'ii\tHeuristic Evaluation: {get_Evaluation_Counter()}')
+						#heuristic_evaluation.append(m)
+						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(get_Evaluation_Counter())+'\n')
 			self.current_state[x][y] = self.player_turn
+			reset_Evaluation_Counter()
 			self.switch_player()
 
 def main():

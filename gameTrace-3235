@@ -2,96 +2,96 @@ n=3 b=2 s=3 t=5
 blocs=([])
 
 Player 1: 3 d=3 a=True e1 (Consecutivity)
-Player 2: 3 d=3 a=False e2 (Closest Winning Condition)
+Player 2: 3 d=3 a=True e1 (Consecutivity)
 
 
    0   1   2
   +------------
-0|  .  .  .
+0|  B  .  B
 1|  .  .  .
-2|  B  B  .
+2|  .  .  .
 
 
-Player X under AIControl plays: x=2, y=2
+Player X under AI Control plays: x=1, y=2
 
-i	Evaluation time: 0.0309451
-i	Heuristic evaluation: -8
+i	Evaluation time: 0.2524719
+i	Heuristic evaluation: 2520
 
    0   1   2	(MOVE #1)
   +------------
-0|  .  .  .
+0|  B  .  B
 1|  .  .  .
-2|  B  B  X
+2|  .  X  .
 
 
-Player O under AIControl plays: x=2, y=0
+Player O under AI Control plays: x=2, y=1
 
-i	Evaluation time: 0.0090029
-i	Heuristic evaluation: 4
+i	Evaluation time: 0.06686
+i	Heuristic evaluation: 720
 
    0   1   2	(MOVE #2)
   +------------
-0|  .  .  O
-1|  .  .  .
-2|  B  B  X
+0|  B  .  B
+1|  .  .  O
+2|  .  X  .
 
 
-Player X under AIControl plays: x=2, y=1
+Player X under AI Control plays: x=2, y=2
 
-i	Evaluation time: 0.000983
-i	Heuristic evaluation: 0
+i	Evaluation time: 0.00702
+i	Heuristic evaluation: 120
 
    0   1   2	(MOVE #3)
   +------------
-0|  .  .  O
-1|  .  .  X
-2|  B  B  X
+0|  B  .  B
+1|  .  .  O
+2|  .  X  X
 
 
-Player O under AIControl plays: x=1, y=1
+Player O under AI Control plays: x=1, y=1
 
-i	Evaluation time: 0.0
-i	Heuristic evaluation: -1000
+i	Evaluation time: 0.000998
+i	Heuristic evaluation: 0
 
    0   1   2	(MOVE #4)
   +------------
-0|  .  .  O
-1|  .  O  X
-2|  B  B  X
+0|  B  .  B
+1|  .  O  O
+2|  .  X  X
 
 
-Player X under AIControl plays: x=0, y=0
+Player X under AI Control plays: x=1, y=0
 
 i	Evaluation time: 0.0
-i	Heuristic evaluation: -1000
+i	Heuristic evaluation: 0
 
    0   1   2	(MOVE #5)
   +------------
-0|  X  .  O
-1|  .  O  X
-2|  B  B  X
+0|  B  X  B
+1|  .  O  O
+2|  .  X  X
 
 
-Player O under AIControl plays: x=1, y=0
+Player O under AI Control plays: x=0, y=2
 
 i	Evaluation time: 0.0
-i	Heuristic evaluation: -1000
+i	Heuristic evaluation: 0
 
    0   1   2	(MOVE #6)
   +------------
-0|  X  O  O
-1|  .  O  X
-2|  B  B  X
+0|  B  X  B
+1|  .  O  O
+2|  O  X  X
 
 
-Player X under AIControl plays: x=0, y=1
+Player X under AI Control plays: x=0, y=1
 
 i	Evaluation time: 0.0
-i	Heuristic evaluation: -1000
+i	Heuristic evaluation: 0
 
    0   1   2	(MOVE #7)
   +------------
-0|  X  O  O
-1|  X  O  X
-2|  B  B  X
+0|  B  X  B
+1|  X  O  O
+2|  O  X  X
 
