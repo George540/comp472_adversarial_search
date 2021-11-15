@@ -9,13 +9,16 @@
 import time
 import random
 from random import randrange
+from typing import Counter
+from collections import defaultdict
 
 turn_start_time = 0
 player_time_limit = 1000
 
+total_evaluations_by_depth = {}
+global_flag = False
 evaluation_time = []
 heuristic_evaluation = []
-evaluations_by_depth = []
 average_recusrion_depth = []
 total_moves = []
 eval_counter = 0
@@ -106,6 +109,7 @@ def get_player_time_limit():
 	global player_time_limit
 	return player_time_limit
 
+
 class Game:
 	'''
 	Let 
@@ -133,7 +137,8 @@ class Game:
 				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, h2=True, recommend=True):
 
 		#SAMPLE GAME TRACE WRITING HAPPENS HERE
-		temp_string = 'gameTrace-'+str(board_size)+str(number_of_blocks)+str(lineup_size)+str(time_threshold)+''
+		temp_string = 'gameTrace-'+str(board_size)+str(number_of_blocks)+str(lineup_size)+str(time_threshold)+'.txt'
+		print(temp_string)
 		gameTraceFile = open(temp_string, "w")
 		self.gameTraceFile = gameTraceFile
 		gameTraceFile.write('n='+str(board_size)+' b='+str(number_of_blocks)+' s='+str(lineup_size)+' t='+str(time_threshold)+'\n')
@@ -148,6 +153,7 @@ class Game:
 			gameTraceFile.write('Player 2: '+ str(p2) +' d='+str(d2)+' a='+str(h2)+' e2 (Closest Winning Condition)\n')
 		gameTraceFile.write('\n')
 
+		self.evaluations_by_depth = {}
 		self.turncount = 0
 		self.board_size = board_size
 		self.number_of_blocks = number_of_blocks
@@ -341,13 +347,15 @@ class Game:
 				print("It's a tie!")
 
 			#6b
-			print('6(b)i\t Average Evaluation Time: '+str(round(sum(evaluation_time)/len(evaluation_time), 2))+'s\n')
+			print('\n6(b)i\t Average Evaluation Time: '+str(round(sum(evaluation_time)/len(evaluation_time), 2))+'s\n')
 			self.gameTraceFile.write('6(b)i\t Average Evaluation Time: '+str(round(sum(evaluation_time)/len(evaluation_time), 2))+'s\n')
 			print('6(b)ii\t Total heuristic evaluations: '+ str(get_Game_Eval_Counter()) +'\n')
 			self.gameTraceFile.write('6(b)ii\t Total heuristic evaluations: '+ str(get_Game_Eval_Counter()) +'\n')
-			print('6(b)iii\t Evaluations by depth: '+'\n')
-			self.gameTraceFile.write('6(b)iii\t Evaluations by depth: '+'\n')
-			print('6(b)iv\t Average Evaluation depth: '+'\n')
+			print('6(b)iii\t Evaluations by depth: '+str(self.evaluations_by_depth)+'\n')
+			self.gameTraceFile.write('6(b)iii\t Evaluations by depth: '+str(self.evaluations_by_depth)+'\n')
+			temp_list = [key * val for key, val in self.evaluations_by_depth.items()]
+			temp_list = (sum(temp_list)/(sum(self.evaluations_by_depth.values())))
+			print('6(b)iv\t Average Evaluation depth: '+str(round(temp_list, 2))+'\n')
 			self.gameTraceFile.write('6(b)iv\t Average Evaluation depth: '+'\n')
 			print('6(b)v\t Average recursion depth: '+'\n')
 			self.gameTraceFile.write('6(b)v\t Average recursion depth: '+'\n')
@@ -604,6 +612,7 @@ class Game:
 		max: Chosing which player to minimize/maximize for
 		h1: True is heuristic one, False is Heuristic 2
 		'''
+		global global_flag
 		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
 			print('Time Limit Reached!')
 			if max:
@@ -629,6 +638,10 @@ class Game:
 			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
 					hasCombinations = True
+					if depth in self.evaluations_by_depth:
+						self.evaluations_by_depth[depth] += get_Evaluation_Counter()
+					else:
+						self.evaluations_by_depth[depth] = get_Evaluation_Counter()
 					if max:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.minimax(max=False, depth=depth-1, h1=h1)
@@ -683,6 +696,10 @@ class Game:
 			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
 					hasCombinations = True
+					if depth in self.evaluations_by_depth:
+						self.evaluations_by_depth[depth] += get_Evaluation_Counter()
+					else:
+						self.evaluations_by_depth[depth] = get_Evaluation_Counter()
 					if max:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1)
@@ -728,7 +745,8 @@ class Game:
 		'''
 		global evaluation_time
 		global heuristic_evaluation
-		
+		global global_flag
+		global total_evaluations_by_depth
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -743,7 +761,8 @@ class Game:
 			start = time.time()
 			set_Turn_Start_Time()
 			#X is ◦ the white/hollow circle
-
+			global_flag = False
+			evaluations_by_depth =0
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False, depth=d1, h1=h1)
@@ -761,15 +780,15 @@ class Game:
 						self.gameTraceFile.write('Player '+str(self.player_turn)+' under Human Control plays: x='+str(x)+', y='+str(y)+'\n')
 						print(F'Player {self.player_turn} under Human Control plays: x = {x}, y = {y}')
 						self.gameTraceFile.write('\n')
-						print(F'i\tEvaluation time: {round(end - start, 7)}s')
-						evaluation_time.append(round(end - start, 7))
-						print('ii\tHeuristic Evaluations:', get_Evaluation_Counter())
-						heuristic_evaluation.append(m)
-						self.gameTraceFile.write('ii\tHeuristic evaluations: '+str(get_Evaluation_Counter())+'\n')
-						print(F'iii\tEvaluations by depth: ') #NOT FINISHED
-						print(F'iv\tAverage evalution depth ') #Not FINISHED
-						print(F'iv\tAverage Recursion depth ') #NOT FINISHED
-						print(F'Recommended move: x = {x}, y = {y}')
+						#print(F'i\tEvaluation time: {round(end - start, 7)}s')
+						#evaluation_time.append(round(end - start, 7))
+						#print('ii\tHeuristic Evaluations:', get_Evaluation_Counter())
+						#heuristic_evaluation.append(m)
+						#self.gameTraceFile.write('ii\tHeuristic evaluations: '+str(get_Evaluation_Counter())+'\n')
+						#print(F'iii\tEvaluations by depth: ') #NOT FINISHED
+						#print(F'iv\tAverage evalution depth ' + str(global_counter)) #Not FINISHED
+						#print(F'iv\tAverage Recursion depth ') #NOT FINISHED
+						#print(F'Recommended move: x = {x}, y = {y}')
 
 					(x,y) = self.input_move()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI)):
@@ -777,12 +796,24 @@ class Game:
 						self.gameTraceFile.write('Player '+str(self.player_turn)+' under AI Control plays: x='+str(x)+', y='+str(y)+'\n')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 						self.gameTraceFile.write('\n')
-						print(F'i\tEvaluation time: {round(end - start, 7)}s')
-						self.gameTraceFile.write('i\tEvaluation time: '+str(round(end - start, 7))+'\n')
-						evaluation_time.append(round(end - start, 7))
-						print(F'ii\tHeuristic Evaluation: {get_Evaluation_Counter()}')
-						#heuristic_evaluation.append(m)
-						self.gameTraceFile.write('ii\tHeuristic evaluations: '+str(get_Evaluation_Counter())+'\n')
+
+			#TURN OUTPUT RESULTS ARE HERE
+			print(F'i\tEvaluation time: {round(end - start, 7)}s')
+			self.gameTraceFile.write('i\tEvaluation time: '+str(round(end - start, 7))+'\n')
+			evaluation_time.append(round(end - start, 7))
+
+			print(F'ii\tHeuristic Evaluations: {get_Evaluation_Counter()}')
+			self.gameTraceFile.write('ii\tHeuristic evaluations: '+str(get_Evaluation_Counter())+'\n')
+
+			print(F'iii\tEvaluations by depth: '+ str(self.evaluations_by_depth)) #NOT FINISHED
+			total_evaluations_by_depth.update(self.evaluations_by_depth)
+
+			temp_list = [key * val for key, val in self.evaluations_by_depth.items()]
+			temp_list = (sum(temp_list)/(sum(self.evaluations_by_depth.values())))
+			print(F'iv\tAverage evaluation depth '+str(round(temp_list, 2))) #Not FINISHED
+			print(F'iv\tAverage Recursion depth ') #NOT FINISHED
+			print(F'Recommended move: x = {x}, y = {y}')
+
 			self.current_state[x][y] = self.player_turn
 			increment_Game_Eval_Counter(get_Evaluation_Counter())
 			reset_Evaluation_Counter()
@@ -800,16 +831,18 @@ def main():
 
 		#SCOREBOARD FILE WRITING HAPPENS HERE!!!!
 		scoreboardFile = open("Scoreboard.txt", "w")
-		scoreboardFile.write('n='+ str(inputs[0]) +' b='+str(inputs[1])+' s='+str(inputs[3])+' t='+str(inputs[6])+'\n\n')
-		scoreboardFile.write('Player 1: d='+str(inputs[4])+' a='+str(inputs[7])+'\n')
-		scoreboardFile.write('Player 2: d='+str(inputs[5])+' a='+str(inputs[7])+'\n\n')
+		scoreboardFile.write('n='+ str(3) +' b='+str(2)+' s='+str(3)+' t='+str(5)+'\n\n')
+		scoreboardFile.write('Player 1: d='+str(3)+' a='+str(True)+'\n')
+		scoreboardFile.write('Player 2: d='+str(3)+' a='+str(True)+'\n\n')
 		scoreboardFile.write(str(loop_code)+' games'+'\n\n')
-		scoreboardFile.write('Total wins for heuristic e1: '+ str(get_Win_For_H1()) +' ('+str(round(100 * (get_Win_For_H1() / loop_code), 2))+'%) (Consecutivity)\n')
-		scoreboardFile.write('Total wins for heuristic e2: '+ str(get_Win_For_H2()) +' ('+str(round(100 * (get_Win_For_H2() / loop_code), 2))+'%) (Closest Winning Condition)\n\n')
-		scoreboardFile.write('i\tAverage evaluation time: '+ 'x' +'s\n')
+		scoreboardFile.write('Total wins for heuristic e1: '+ str(get_Win_For_H1()) +' ('+str(round(100 * (get_Win_For_H1() / loop_code), 2)) +'%) (Consecutivity)\n')
+		scoreboardFile.write('Total wins for heuristic e2: '+ str(get_Win_For_H2()) +' ('+str(round(100 * (get_Win_For_H2() / loop_code), 2)) +'%) (Closest Winning Condition)\n\n')
+		scoreboardFile.write('i\tAverage evaluation time: '+ str(round(sum(evaluation_time)/len(evaluation_time), 2)) +'s\n')
 		scoreboardFile.write('ii\tTotal heuristic evaluations: '+ str(get_Total_Eval_Counter_PS()) +'\n')
-		scoreboardFile.write('iii\tEvaluations by depth: '+ 'x' +'\n')
-		scoreboardFile.write('iv\tAverage evaluation depth: '+ 'x' +'\n')
+		scoreboardFile.write('iii\tEvaluations by depth: '+ str(total_evaluations_by_depth) +'\n')
+		temp_list = [key * val for key, val in total_evaluations_by_depth.items()]
+		temp_list = (sum(temp_list)/(sum(total_evaluations_by_depth.values())))
+		scoreboardFile.write('iv\tAverage evaluation depth: '+ str(round(temp_list, 2)) +'\n')
 		scoreboardFile.write('v\tAverage recursion depth: '+ 'x' +'\n')
 		scoreboardFile.write('vi\tAverage moves per game: '+ str(round(get_Total_Moves_PS() / loop_code, 2)) +'\n')
 		reset_Total_Eval_Counter_PS()
@@ -818,7 +851,7 @@ def main():
 	else:
 		loop_code = int(input('How many times would you like to run the game?\n'))
 		for i in range(loop_code):
-			g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+			g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI)
 		#SCOREBOARD FILE WRITING HAPPENS HERE!!!!
 		scoreboardFile = open("Scoreboard.txt", "w")
 		scoreboardFile.write('n='+ str(3) +' b='+str(2)+' s='+str(3)+' t='+str(5)+'\n\n')
@@ -827,10 +860,12 @@ def main():
 		scoreboardFile.write(str(loop_code)+' games'+'\n\n')
 		scoreboardFile.write('Total wins for heuristic e1: '+ str(get_Win_For_H1()) +' ('+str(round(100 * (get_Win_For_H1() / loop_code), 2)) +'%) (Consecutivity)\n')
 		scoreboardFile.write('Total wins for heuristic e2: '+ str(get_Win_For_H2()) +' ('+str(round(100 * (get_Win_For_H2() / loop_code), 2)) +'%) (Closest Winning Condition)\n\n')
-		scoreboardFile.write('i\tAverage evaluation time: '+ 'x' +'s\n')
+		scoreboardFile.write('i\tAverage evaluation time: '+ str(round(sum(evaluation_time)/len(evaluation_time), 2)) +'s\n')
 		scoreboardFile.write('ii\tTotal heuristic evaluations: '+ str(get_Total_Eval_Counter_PS()) +'\n')
-		scoreboardFile.write('iii\tEvaluations by depth: '+ 'x' +'\n')
-		scoreboardFile.write('iv\tAverage evaluation depth: '+ 'x' +'\n')
+		scoreboardFile.write('iii\tEvaluations by depth: '+ str(total_evaluations_by_depth) +'\n')
+		temp_list = [key * val for key, val in total_evaluations_by_depth.items()]
+		temp_list = (sum(temp_list)/(sum(total_evaluations_by_depth.values())))
+		scoreboardFile.write('iv\tAverage evaluation depth: '+ str(round(temp_list, 2)) +'\n')
 		scoreboardFile.write('v\tAverage recursion depth: '+ 'x' +'\n')
 		scoreboardFile.write('vi\tAverage moves per game: '+ str(round(get_Total_Moves_PS() / loop_code, 2)) +'\n')
 		reset_Total_Eval_Counter_PS()
@@ -874,7 +909,15 @@ def menu():
 	t = float(input('\nEnter maximum allowed time (in seconds) for AI to return a move (must be above 0): '))
 
 	minimax = True
-	choice = str(input('\nMINIMAX or ALPHABETA? (m/a)'))
+	choice = str(input('\nMINIMAX or ALPHABETA P1? (m/a)'))
+	if (choice == 'm'):
+		print('MINIMAX selected\n')
+		a = Game.MINIMAX
+	elif (choice == 'a'):
+		print('ALPHABETA selected\n')
+		a = Game.ALPHABETA
+
+	choice = str(input('\nMINIMAX or ALPHABETA P2? (m/a)'))
 	if (choice == 'm'):
 		print('MINIMAX selected\n')
 		a = Game.MINIMAX
