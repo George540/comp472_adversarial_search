@@ -540,9 +540,11 @@ class Game:
 			else:
 				return (self.heuristic_two(max), x, y)
 
+		hasCombinations = False
 		for i in range(0, self.board_size):
 			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
+					hasCombinations = True
 					if max:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.minimax(max=False, depth=depth-1, h1=h1)
@@ -558,6 +560,11 @@ class Game:
 							x = i
 							y = j
 					self.current_state[i][j] = '.'
+		if (hasCombinations == False):
+			if h1:
+				return (self.heuristic_one(max), x, y)
+			else:
+				return (self.heuristic_two(max), x, y)
 		return(value, x, y)
 
 	def alphabeta(self, alpha=-100, beta=100, max=False, depth=3, h1=True):
@@ -587,9 +594,11 @@ class Game:
 			else:
 				return (self.heuristic_two(max), x, y)
 		
+		hasCombinations = False
 		for i in range(0, self.board_size):
 			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
+					hasCombinations = True
 					if max:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1)
@@ -615,6 +624,13 @@ class Game:
 							return (value, x, y)
 						if value < beta:
 							beta = value
+
+		if (hasCombinations == False):
+			if h1:
+				return (self.heuristic_one(max), x, y)
+			else:
+				return (self.heuristic_two(max), x, y)
+				
 		return (value, x, y)
 
 	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True, h2=True):
@@ -689,10 +705,10 @@ class Game:
 def main():
 	inputs = menu()
 	g = Game(recommend=True)
-	set_player_time_limit(0.6)
 	if (inputs != []):
-		loop_code = input('How many times would you like to run the game?\n')
+		loop_code = int(input('How many times would you like to run the game?\n'))
 		g = Game(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6], inputs[7], inputs[8], inputs[9], inputs[10], inputs[11], recommend=True)
+		set_player_time_limit(inputs[6])
 		for i in range(loop_code):
 			g.play(algo=g.a, player_x=g.p1, player_o=g.p2, d1=g.d1, d2=g.d2, h1=g.h1, h2=g.h2)
 
@@ -734,6 +750,8 @@ def menu():
 			x_cord = int(input('\nEnter X coordinate of block ' + str(i+1) + ' (Must be valid): '))
 			y_cord = int(input('\nEnter Y coordinate of block ' + str(i+1) + ' (Must be valid): '))
 			block_coordinates[i] = (x_cord, y_cord)
+	else:
+		block_coordinates = []
 
 	lineup_size = int(input('\nEnter the line-up size, between 3 and n: '))
 
