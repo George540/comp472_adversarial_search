@@ -19,6 +19,7 @@ evaluations_by_depth = []
 average_recusrion_depth = []
 total_moves = []
 eval_counter = 0
+total_eval_counter_per_game = 0
 
 def increment_Evaluation_Counter():
 	global eval_counter
@@ -31,6 +32,18 @@ def reset_Evaluation_Counter():
 def get_Evaluation_Counter():
 	global eval_counter
 	return eval_counter
+
+def increment_Game_Eval_Counter(x):
+	global total_eval_counter_per_game
+	total_eval_counter_per_game += x
+
+def get_Game_Eval_Counter():
+	global total_eval_counter_per_game
+	return total_eval_counter_per_game
+
+def reset_Game_Eval_Counter():
+	global total_eval_counter_per_game
+	total_eval_counter_per_game = 0
 
 def set_Turn_Start_Time():
 	global turn_start_time
@@ -273,6 +286,22 @@ class Game:
 				print('The winner is O!')
 			elif self.result == '.':
 				print("It's a tie!")
+
+			#6b
+			print('6(b)i\t Average Evaluation Time: '+'s\n')
+			self.gameTraceFile.write('6(b)i\t Average Evaluation Time: '+'s\n')
+			print('6(b)ii\t Total heuristic evaluations: '+ str(get_Game_Eval_Counter()) +'\n')
+			self.gameTraceFile.write('6(b)ii\t Total heuristic evaluations: '+ str(get_Game_Eval_Counter()) +'\n')
+			print('6(b)iii\t Evaluations by depth: '+'\n')
+			self.gameTraceFile.write('6(b)iii\t Evaluations by depth: '+'\n')
+			print('6(b)iv\t Average Evaluation depth: '+'\n')
+			self.gameTraceFile.write('6(b)iv\t Average Evaluation depth: '+'\n')
+			print('6(b)v\t Average recursion depth: '+'\n')
+			self.gameTraceFile.write('6(b)v\t Average recursion depth: '+'\n')
+			print('6(b)vi\t Total moves: '+str(self.turncount-1)+'\n')
+			self.gameTraceFile.write('6(b)vi\t Total moves: '+str(self.turncount-1)+'\n')
+			self.turncount = 0
+			reset_Game_Eval_Counter()
 			self.initialize_game()
 		return self.result
 
@@ -652,6 +681,7 @@ class Game:
 		if player_o == None:
 			player_o = self.HUMAN
 		while True:
+			print()
 			self.draw_board()
 			if self.check_end():
 				return
@@ -678,9 +708,9 @@ class Game:
 						self.gameTraceFile.write('\n')
 						print(F'i\tEvaluation time: {round(end - start, 7)}s')
 						evaluation_time.append(round(end - start, 7))
-						print('ii\tHeuristic Evaluation:', get_Evaluation_Counter())
+						print('ii\tHeuristic Evaluations:', get_Evaluation_Counter())
 						heuristic_evaluation.append(m)
-						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(get_Evaluation_Counter())+'\n')
+						self.gameTraceFile.write('ii\tHeuristic evaluations: '+str(get_Evaluation_Counter())+'\n')
 						print(F'iii\tEvaluations by depth: ') #NOT FINISHED
 						print(F'iv\tAverage evalution depth ') #Not FINISHED
 						print(F'iv\tAverage Recursion depth ') #NOT FINISHED
@@ -697,8 +727,9 @@ class Game:
 						evaluation_time.append(round(end - start, 7))
 						print(F'ii\tHeuristic Evaluation: {get_Evaluation_Counter()}')
 						#heuristic_evaluation.append(m)
-						self.gameTraceFile.write('i\tHeuristic evaluation: '+str(get_Evaluation_Counter())+'\n')
+						self.gameTraceFile.write('ii\tHeuristic evaluations: '+str(get_Evaluation_Counter())+'\n')
 			self.current_state[x][y] = self.player_turn
+			increment_Game_Eval_Counter(get_Evaluation_Counter())
 			reset_Evaluation_Counter()
 			self.switch_player()
 
@@ -720,7 +751,15 @@ def main():
 		scoreboardFile.write(str(loop_code)+' games')
 
 	else:
-		g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+		loop_code = int(input('How many times would you like to run the game?\n'))
+		for i in range(loop_code):
+			g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
+		#SCOREBOARD FILE WRITING HAPPENS HERE!!!!
+		scoreboardFile = open("Scoreboard.txt", "w")
+		scoreboardFile.write('n='+ str(3) +' b='+str(2)+' s='+str(3)+' t='+str(5)+'\n\n')
+		scoreboardFile.write('Player 1: d='+str(3)+' a='+str(True)+'\n')
+		scoreboardFile.write('Player 2: d='+str(3)+' a='+str(True)+'\n\n')
+		scoreboardFile.write(str(loop_code)+' games')
 
 def menu():
 	print('\n---------- Welcome to Team Oranges Mini-Assignment 2 for COMP 472 ----------\n')

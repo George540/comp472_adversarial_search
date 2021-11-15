@@ -1,0 +1,6 @@
+n=3 b=2 s=3 t=5
+
+Player 1: d=3 a=True
+Player 2: d=3 a=True
+
+2 games
