@@ -1,0 +1,1706 @@
+n=4 b=4 s=3 t=1.0
+blocs=([(0, 0), (0, 3), (3, 0), (3, 3)])
+
+Player 1: 3 d=6 a=True e1 (Consecutivity)
+Player 2: 3 d=6 a=False e2 (Closest Winning Condition)
+
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.420532
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.1735182
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.3057392
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0416639
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0241079
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.025075
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0010231
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.0029922
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.000999
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.08s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 330223, 5: 2003556, 4: 11874128, 3: 47675982, 2: 191522524, 1: 590012279}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.3855481
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.1395361
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.1216261
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0277081
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0349059
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.019948
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.0039899
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0009968
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.000998
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.07s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 660446, 5: 4007112, 4: 23748256, 3: 95351964, 2: 383045048, 1: 1180024558}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.1336429
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.0179532
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.0777919
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0060101
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0139871
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.009999
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.004987
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0009959
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.06s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 990669, 5: 6010668, 4: 35622384, 3: 143027946, 2: 574567572, 1: 1770036837}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.1017532
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.0119669
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.0718081
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0039911
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.014986
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.0039902
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.002991
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0009971
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0009999
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.05s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 1320892, 5: 8014224, 4: 47496512, 3: 190703928, 2: 766090096, 1: 2360049116}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.1017289
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.0149601
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.087765
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0029919
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0169551
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.0069811
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0009971
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.0019941
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.04s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 1651115, 5: 10017780, 4: 59370640, 3: 238379910, 2: 957612620, 1: 2950061395}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.1017289
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.005018
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.0578668
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0030181
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0149601
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.005007
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.0019939
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.002991
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0009971
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.04s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 1981338, 5: 12021336, 4: 71244768, 3: 286055892, 2: 1149135144, 1: 3540073674}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.0897601
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.003989
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.05984
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0019948
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.012965
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.0019929
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.000998
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.003989
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0019951
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0009959
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.000998
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.03s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 2311561, 5: 14024892, 4: 83118896, 3: 333731874, 2: 1340657668, 1: 4130085953}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.09375
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.004986
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.053854
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0019372
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0119681
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.002991
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.0049858
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.03s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 2641784, 5: 16028448, 4: 94993024, 3: 381407856, 2: 1532180192, 1: 4720098232}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.098762
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.009001
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.0658479
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.0029922
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0199451
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.003016
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0009961
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.001996
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0009971
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.03s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 2972007, 5: 18032004, 4: 106867152, 3: 429083838, 2: 1723702716, 1: 5310110511}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12
+
+   0   1   2   3
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  .
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=3, y=2
+
+i	Evaluation time: 0.086767
+ii	Heuristic evaluations: 29658
+
+   0   1   2   3	(MOVE #1)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  .
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player O under AI Control plays: x=3, y=1
+
+i	Evaluation time: 0.003989
+ii	Heuristic evaluations: 1286
+
+   0   1   2   3	(MOVE #2)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  .  B
+
+
+Player X under AI Control plays: x=2, y=3
+
+i	Evaluation time: 0.054853
+ii	Heuristic evaluations: 16973
+
+   0   1   2   3	(MOVE #3)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  .  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=2
+
+i	Evaluation time: 0.001991
+ii	Heuristic evaluations: 554
+
+   0   1   2   3	(MOVE #4)
+  +----------------
+0|  B  .  .  B
+1|  .  .  .  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=2, y=1
+
+i	Evaluation time: 0.0119681
+ii	Heuristic evaluations: 3196
+
+   0   1   2   3	(MOVE #5)
+  +----------------
+0|  B  .  .  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player O under AI Control plays: x=2, y=0
+
+i	Evaluation time: 0.0040131
+ii	Heuristic evaluations: 467
+
+   0   1   2   3	(MOVE #6)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  .  X  B
+
+
+Player X under AI Control plays: x=1, y=3
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 62
+
+   0   1   2   3	(MOVE #7)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  .  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=2
+
+i	Evaluation time: 0.0019951
+ii	Heuristic evaluations: 26
+
+   0   1   2   3	(MOVE #8)
+  +----------------
+0|  B  .  O  B
+1|  .  .  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=1, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 10
+
+   0   1   2   3	(MOVE #9)
+  +----------------
+0|  B  .  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=1, y=0
+
+i	Evaluation time: 0.000998
+ii	Heuristic evaluations: 4
+
+   0   1   2   3	(MOVE #10)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  .  O  O  X
+3|  B  X  X  B
+
+
+Player X under AI Control plays: x=0, y=2
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 2
+
+   0   1   2   3	(MOVE #11)
+  +----------------
+0|  B  O  O  B
+1|  .  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+
+Player O under AI Control plays: x=0, y=1
+
+i	Evaluation time: 0.0
+ii	Heuristic evaluations: 1
+
+   0   1   2   3	(MOVE #12)
+  +----------------
+0|  B  O  O  B
+1|  O  X  X  O
+2|  X  O  O  X
+3|  B  X  X  B
+
+6(b)i	 Average Evaluation Time: 0.03s
+6(b)ii	 Total heuristic evaluations: 52239
+6(b)iii	 Evaluations by depth: {6: 3302230, 5: 20035560, 4: 118741280, 3: 476759820, 2: 1915225240, 1: 5900122790}
+6(b)iv	 Average Evaluation depth: 1.39
+6(b)v	 Average recursion depth: 
+6(b)vi	 Total moves: 12

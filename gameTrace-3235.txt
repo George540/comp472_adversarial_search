@@ -1,6 +1,0 @@
-n=3 b=2 s=3 t=5
-blocs=([])
-
-Player 1: 3 d=3 a=True e1 (Consecutivity)
-Player 2: 3 d=3 a=True e1 (Consecutivity)
-

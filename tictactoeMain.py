@@ -27,6 +27,7 @@ total_evals_per_session = 0
 total_moves_per_session = 0
 total_wins_for_h1_PS = 0
 total_wins_for_h2_PS = 0
+total_ARD = []
 
 def increment_Evaluation_Counter():
 	global eval_counter
@@ -164,6 +165,8 @@ class Game:
 			gameTraceFile.write('Player 2: '+ str(p2) +' d='+str(d2)+' a='+str(h2)+' e2 (Closest Winning Condition)\n')
 		gameTraceFile.write('\n')
 
+		self.number_of_turns = 0
+		self.game_ARD = 0
 		self.evaluations_by_depth = {}
 		self.turncount = 0
 		self.board_size = board_size
@@ -359,6 +362,7 @@ class Game:
 		returns the result
 		'''
 		global evaluation_time
+		global total_ARD
 		self.result = self.is_end()
 		# Printing the appropriate message if the game has ended
 		if self.result != None:
@@ -387,13 +391,14 @@ class Game:
 			temp_list = [key * val for key, val in self.evaluations_by_depth.items()]
 			temp_list = (sum(temp_list)/(sum(self.evaluations_by_depth.values())))
 			print('6(b)iv\t Average Evaluation depth: '+str(round(temp_list, 2))+'\n')
-			self.gameTraceFile.write('6(b)iv\t Average Evaluation depth: '+'\n')
-			print('6(b)v\t Average recursion depth: '+'\n')
+			self.gameTraceFile.write('6(b)iv\t Average Evaluation depth: '+str(round(temp_list, 2))+'\n')
+			print('6(b)v\t Average recursion depth: '+ str(round(self.game_ARD/self.number_of_turns, 2)) +'\n')
 			self.gameTraceFile.write('6(b)v\t Average recursion depth: '+'\n')
 			print('6(b)vi\t Total moves: '+str(self.turncount-1)+'\n')
 			self.gameTraceFile.write('6(b)vi\t Total moves: '+str(self.turncount-1)+'\n')
 			increment_Moves_PS(self.turncount - 1)
 			self.turncount = 0
+			total_ARD.append(self.game_ARD/self.number_of_turns)
 			increment_Total_Eval_Counter_PS(get_Game_Eval_Counter())
 			reset_Game_Eval_Counter()
 			self.initialize_game()
@@ -664,6 +669,14 @@ class Game:
 		returns heuristic value acquired, and the x & y coordinate of it
 		'''
 		global global_flag
+		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
+			print('Time Limit Reached!')
+			if max:
+				print('O LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
+				quit()
+			else:
+				print('X LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
+				quit()
 		value = 1000
 		if max:
 			value = -1000
@@ -671,16 +684,18 @@ class Game:
 		y = None
 		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit()-0.01:
 			if h1:
-				return (self.heuristic_one(max), x, y)
+				return (self.heuristic_one(max), x, y, depth)
 			else:
-				return (self.heuristic_two(max), x, y)
+				return (self.heuristic_two(max), x, y, depth)
 		if (depth <= 0):
 			if h1:
-				return (self.heuristic_one(max), x, y)
+				return (self.heuristic_one(max), x, y, depth)
 			else:
-				return (self.heuristic_two(max), x, y)
+				return (self.heuristic_two(max), x, y, depth)
 
 		hasCombinations = False
+		node_ADB = 0
+		number_of_children = 0
 		for i in range(0, self.board_size):
 			for j in range(0, self.board_size):
 				if self.current_state[i][j] == '.':
@@ -691,14 +706,18 @@ class Game:
 						self.evaluations_by_depth[depth] = get_Evaluation_Counter()
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _) = self.minimax(max=False, depth=depth-1, h1=h1)
+						(v, _, _, d) = self.minimax(max=False, depth=depth-1, h1=h1)
+						node_ADB += d
+						number_of_children += 1
 						if v >= value:
 							value = v
 							x = i
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _) = self.minimax(max=True, depth=depth-1, h1=h1)
+						(v, _, _, d) = self.minimax(max=True, depth=depth-1, h1=h1)
+						node_ADB += d
+						number_of_children += 1
 						if v <= value:
 							value = v
 							x = i
@@ -706,10 +725,11 @@ class Game:
 					self.current_state[i][j] = '.'
 		if (hasCombinations == False):
 			if h1:
-				return (self.heuristic_one(max), x, y)
+				return (self.heuristic_one(max), x, y, depth)
 			else:
-				return (self.heuristic_two(max), x, y)
-		return(value, x, y)
+				return (self.heuristic_two(max), x, y, depth)
+		node_ADB = node_ADB / number_of_children
+		return(value, x, y, node_ADB)
 
 	def alphabeta(self, alpha=-100, beta=100, max=False, depth=3, h1=True):
 		'''
@@ -724,14 +744,14 @@ class Game:
 
 		returns heuristic value acquired, and the x & y coordinate of it
 		'''
-		# We're initially setting it to 1000 or -1000 as worse than the worst case:
+		global global_flag
 		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
 			print('Time Limit Reached!')
 			if max:
-				print('O LOSES')
+				print('O LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
 				quit()
 			else:
-				print('X LOSES')
+				print('X LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
 				quit()
 		value = 1000
 		if max:
@@ -739,12 +759,19 @@ class Game:
 		x = None
 		y = None
 		
+		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit()-0.01:
+			if h1:
+				return (self.heuristic_one(max), x, y, depth)
+			else:
+				return (self.heuristic_two(max), x, y, depth)
 		if (depth <= 0):
 			if h1:
-				return (self.heuristic_one(max), x, y)
+				return (self.heuristic_one(max), x, y, depth)
 			else:
-				return (self.heuristic_two(max), x, y)
+				return (self.heuristic_two(max), x, y, depth)
 		
+		node_ADB = 0
+		number_of_children = 0
 		hasCombinations = False
 		for i in range(0, self.board_size):
 			for j in range(0, self.board_size):
@@ -756,14 +783,18 @@ class Game:
 						self.evaluations_by_depth[depth] = get_Evaluation_Counter()
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1)
+						(v, _, _, d) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1)
+						node_ADB += d
+						number_of_children += 1
 						if v >= value:
 							value = v
 							x = i
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _) = self.alphabeta(alpha, beta, max=True, depth=depth-1, h1=h1)
+						(v, _, _, d) = self.alphabeta(alpha, beta, max=True, depth=depth-1, h1=h1)
+						node_ADB += d
+						number_of_children += 1
 						if v <= value:
 							value = v
 							x = i
@@ -771,22 +802,22 @@ class Game:
 					self.current_state[i][j] = '.'
 					if max: 
 						if value >= beta:
-							return (value, x, y)
+							return (value, x, y, depth)
 						if value > alpha:
 							alpha = value
 					else:
 						if value <= alpha:
-							return (value, x, y)
+							return (value, x, y, depth)
 						if value < beta:
 							beta = value
 
 		if (hasCombinations == False):
 			if h1:
-				return (self.heuristic_one(max), x, y)
+				return (self.heuristic_one(max), x, y, depth)
 			else:
-				return (self.heuristic_two(max), x, y)
-				
-		return (value, x, y)
+				return (self.heuristic_two(max), x, y, depth)
+		node_ADB = node_ADB / number_of_children
+		return (value, x, y, depth)
 
 	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True, h2=True):
 		'''
@@ -810,6 +841,7 @@ class Game:
 			player_x = self.HUMAN
 		if player_o == None:
 			player_o = self.HUMAN
+		
 		while True:
 			print()
 			self.draw_board()
@@ -819,17 +851,21 @@ class Game:
 			set_Turn_Start_Time()
 			#X is ◦ the white/hollow circle
 			global_flag = False
-			evaluations_by_depth =0
+			turn_ARD = 0
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
-					(_, x, y) = self.minimax(max=False, depth=d1, h1=h1)
+					(_, x, y, d) = self.minimax(max=False, depth=d1, h1=h1)
+					turn_ARD = d
 				else:
-					(_, x, y) = self.minimax(max=True, depth=d2, h1=h2)
+					(_, x, y, d) = self.minimax(max=True, depth=d2, h1=h2)
+					turn_ARD = d
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
-					(m, x, y) = self.alphabeta(max=False, depth=d1, h1=h1)
+					(m, x, y, d) = self.alphabeta(max=False, depth=d1, h1=h1)
+					turn_ARD = d
 				else:
-					(m, x, y) = self.alphabeta(max=True, depth=d2, h1=h2)
+					(m, x, y, d) = self.alphabeta(max=True, depth=d2, h1=h2)
+					turn_ARD = d
 			end = time.time()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN)):
 					if self.recommend:
@@ -868,18 +904,20 @@ class Game:
 			temp_list = [key * val for key, val in self.evaluations_by_depth.items()]
 			temp_list = (sum(temp_list)/(sum(self.evaluations_by_depth.values())))
 			print(F'iv\tAverage evaluation depth '+str(round(temp_list, 2))) #Not FINISHED
-			print(F'iv\tAverage Recursion depth ') #NOT FINISHED
+			print(F'iv\tAverage Recursion depth ' + str()) #NOT FINISHED
 			print(F'Recommended move: x = {x}, y = {y}')
 
 			self.current_state[x][y] = self.player_turn
 			increment_Game_Eval_Counter(get_Evaluation_Counter())
 			reset_Evaluation_Counter()
 			self.switch_player()
+			self.game_ARD += turn_ARD
+			self.number_of_turns += 1
 
 def main():
 	inputs = menu()
-	g = Game(recommend=True)
 	if (inputs != []):
+		g = Game(recommend=True)
 		loop_code = int(input('How many times would you like to run the game?\n'))
 		g = Game(inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5], inputs[6], inputs[7], inputs[8], inputs[9], inputs[10], inputs[11], recommend=True)
 		set_player_time_limit(inputs[6])
@@ -900,15 +938,17 @@ def main():
 		temp_list = [key * val for key, val in total_evaluations_by_depth.items()]
 		temp_list = (sum(temp_list)/(sum(total_evaluations_by_depth.values())))
 		scoreboardFile.write('iv\tAverage evaluation depth: '+ str(round(temp_list, 2)) +'\n')
-		scoreboardFile.write('v\tAverage recursion depth: '+ 'x' +'\n')
+		all_games_ARD = sum(total_ARD)/len(total_ARD)
+		scoreboardFile.write('v\tAverage recursion depth: '+ str(all_games_ARD) +'\n')
 		scoreboardFile.write('vi\tAverage moves per game: '+ str(round(get_Total_Moves_PS() / loop_code, 2)) +'\n')
 		reset_Total_Eval_Counter_PS()
 		reset_Moves_PS()
 
 	else:
+		g = Game(recommend=True)
 		loop_code = int(input('How many times would you like to run the game?\n'))
 		for i in range(loop_code):
-			g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.AI)
+			g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
 		#SCOREBOARD FILE WRITING HAPPENS HERE!!!!
 		scoreboardFile = open("Scoreboard.txt", "w")
 		scoreboardFile.write('n='+ str(3) +' b='+str(2)+' s='+str(3)+' t='+str(5)+'\n\n')
@@ -923,7 +963,8 @@ def main():
 		temp_list = [key * val for key, val in total_evaluations_by_depth.items()]
 		temp_list = (sum(temp_list)/(sum(total_evaluations_by_depth.values())))
 		scoreboardFile.write('iv\tAverage evaluation depth: '+ str(round(temp_list, 2)) +'\n')
-		scoreboardFile.write('v\tAverage recursion depth: '+ 'x' +'\n')
+		all_games_ARD = sum(total_ARD)/len(total_ARD)
+		scoreboardFile.write('v\tAverage recursion depth: '+ str(all_games_ARD) +'\n')
 		scoreboardFile.write('vi\tAverage moves per game: '+ str(round(get_Total_Moves_PS() / loop_code, 2)) +'\n')
 		reset_Total_Eval_Counter_PS()
 		reset_Moves_PS()

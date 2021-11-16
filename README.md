@@ -29,6 +29,11 @@ Please select one of the following options: (y/n)
 5. Input the correct settings as the command line prompts you. If you wish to run a quick test, you may simple select 'y'
 6. Once the settings are chosen, the code will run. If a human player was select during the game options, you will need to input x,y coordinates every turn
 
+## Special Notes
+1. When time threshold is passed at one game, program terminates without producing metrics. There is no point if
+no rounds are processed. Other cases, where the threshold is never surpassed, the results are properly calculated
+and displayed
+
 ## Contributing
 Pull requests will only be permitted by COMP 472 TAs as this is a private project.
 

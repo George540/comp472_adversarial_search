@@ -1,0 +1,35 @@
+n=8 b=6 s=5 t=5.0
+blocs=([])
+
+Player 1: 3 d=6 a=True e1 (Consecutivity)
+Player 2: 3 d=6 a=False e2 (Closest Winning Condition)
+
+
+   0   1   2   3   4   5   6   7
+  +--------------------------------
+0|  .  .  .  .  .  .  .  .
+1|  .  .  .  B  .  .  .  .
+2|  .  .  .  .  .  B  .  .
+3|  .  .  .  .  .  .  B  .
+4|  .  .  .  .  .  B  .  .
+5|  .  .  B  .  .  .  .  .
+6|  .  .  .  .  .  .  .  .
+7|  .  .  .  .  .  .  .  .
+
+
+Player X under AI Control plays: x=3, y=6
+
+i	Evaluation time: 4.9924631
+ii	Heuristic evaluations: 798143
+
+   0   1   2   3   4   5   6   7	(MOVE #1)
+  +--------------------------------
+0|  .  .  .  .  .  .  .  .
+1|  .  .  .  B  .  .  .  .
+2|  .  .  .  .  .  B  .  .
+3|  .  .  .  .  .  .  B  .
+4|  .  .  .  .  .  B  .  .
+5|  .  .  B  .  .  .  .  .
+6|  .  .  .  X  .  .  .  .
+7|  .  .  .  .  .  .  .  .
+
