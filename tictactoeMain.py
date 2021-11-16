@@ -136,12 +136,17 @@ class Game:
 	def __init__(self, board_size=3, number_of_blocks=2, block_coordinates = [], 
 				lineup_size=3, d1=3, d2=3, time_threshold=5, a=True, p1=AI, p2=AI, h1=True, h2=True, recommend=True):
 		'''
-		Constructor of game object takes the board parameters and ensures that they are within value requirements.
+		Constructor of game object takes the board parameters and ensures that they are within value requirements and creates the game object
 
 		board_size (int): represents the NxN board size min 3 and max 10
 		number_of_blocks (int): number of blocks that will be placed on the board
 		block_coordinates (list): 2d coordinates of block placement, if empty, blocks are randomly assigned
-		
+		lineup_size (int): The number of the same consecutive X's or O's needed to win the game
+		d1, d2 (int): The depth of the tree traversarl for each player
+		time_threshold (int): The amount of time in seconds that the algorithm has to come up with a resonable decision for a node
+		p1, p2 (int): The numbers associated with choosing an AI or HUMAN as player 1 or 2
+		H1, H2 (bool): Setting it to True will use heuristic 1, heuristic 2 otherwise for both players, respectively
+		recommend (bool): Setting this to true will have the AI display the best tile to place a piece X or O, nothing otherwise 
 		'''
 		temp_string = 'gameTrace-'+str(board_size)+str(number_of_blocks)+str(lineup_size)+str(time_threshold)+'.txt'
 		print(temp_string)
@@ -213,6 +218,9 @@ class Game:
 		self.recommend = recommend
 		
 	def initialize_game(self):
+		'''
+			Initializes the game board with or without Blocks B.
+		'''
 		self.current_state = [['.' for i in range(self.board_size)] for j in range(self.board_size)]
 		if (self.block_coordinates == []):
 			for i in range(self.number_of_blocks):
@@ -225,6 +233,9 @@ class Game:
 		self.player_turn = 'X'
 
 	def draw_board(self):
+		'''
+			Draws the nxn board with the current contents 
+		'''
 		print()
 		self.gameTraceFile.write('\n')
 		for i in range(self.board_size):
@@ -249,6 +260,11 @@ class Game:
 	def is_valid(self, px, py):
 		'''
 		Checks if player move is inside game bounds or on an empty slot
+
+		px (int): The integer value for the x coordinate
+		py (int): The integer value for the y coordinate
+
+		Returns true/false if the coordinates inputted are correct or not
 		'''
 		if px < 0 or px > self.board_size-1 or py < 0 or py > self.board_size-1:
 			return False
@@ -260,6 +276,8 @@ class Game:
 	def is_end(self):
 		'''
 		Verifies if win condition vertical/horizontal/diagonal lineup_size is met
+
+		returns a winner, if there is one or a tie, if that is the case. None if the game is still going
 		'''
 		# Vertical win
 		pivot_v = '.'
@@ -333,6 +351,13 @@ class Game:
 
 	# def check_end checks(self) checks if the game has finished, returns winner, tie message, or None if game is still on going
 	def check_end(self):
+		'''
+			An extension to the method above. This prints out the information of the winner of a match or stalemate. As well as metrics.
+
+			self: game object with all attributes
+
+			returns the result
+		'''
 		global evaluation_time
 		self.result = self.is_end()
 		# Printing the appropriate message if the game has ended
@@ -375,6 +400,11 @@ class Game:
 		return self.result
 
 	def input_move(self):
+		'''
+			Receives player/AI input
+
+			self: game object with all attributes
+		'''
 		while True:
 			print(F'Player {self.player_turn}, enter your move:')
 			px = int(input('enter the x coordinate: '))
@@ -385,6 +415,9 @@ class Game:
 				print('The move is not valid! Try again.')
 
 	def switch_player(self):
+		'''
+			Switches player turns
+		'''
 		if self.player_turn == 'X':
 			self.player_turn = 'O'
 		elif self.player_turn == 'O':
@@ -400,8 +433,11 @@ class Game:
 			|.		|+1
 			|B		|+0
 			|O		|-1
+		self: game object with all attributes
 		Max = False, means X is playing
 		Max = True, means O is playing
+
+		returns a heuristic value evaluated at *this* node
 		'''
 		increment_Evaluation_Counter()
 		maximize_for = ''
@@ -517,7 +553,11 @@ class Game:
 				
 	def heuristic_two(self, max=False):
 		'''
+		self: game object with all attributes
 		Calculates the amount of blocks left to complete the closest winning condition
+		Max (bool): The boolean value needed to determine if max is seeking to maximize his heuristic. Min otherwise 
+
+		returns a heuristic value evaluated at *this* node
 		'''
 		increment_Evaluation_Counter()
 		maximize_for = ''
@@ -614,9 +654,13 @@ class Game:
 
 	def minimax(self, max, depth, h1):
 		'''
+		Minimax algorithm implementation
+
 		self: game object with all attributes
-		max: Chosing which player to minimize/maximize for
-		h1: True is heuristic one, False is Heuristic 2
+		max (bool): Chosing which player to minimize/maximize for
+		h1 (bool): True is heuristic one, False is Heuristic 2
+
+		returns heuristic value acquired, and the x & y coordinate of it
 		'''
 		global global_flag
 		value = 1000
@@ -667,12 +711,19 @@ class Game:
 		return(value, x, y)
 
 	def alphabeta(self, alpha=-100, beta=100, max=False, depth=3, h1=True):
-		# Minimizing for 'X' and maximizing for 'O'
-		# Possible values are:
-		# -1 - win for 'X'
-		# 0  - a tie
-		# 1  - loss for 'X'
-		# We're initially setting it to 2 or -2 as worse than the worst case:
+		'''
+		Alphabeta algorithm implementation
+
+		self: game object with all attributes
+		alpha (float): Float used for comparison
+		beta (float): Float used for comparison
+		max (bool): Chosing which player to minimize/maximize for
+		depth (int): Traversal depth
+		h1 (bool): True is heuristic one, False is Heuristic 2
+
+		returns heuristic value acquired, and the x & y coordinate of it
+		'''
+		# We're initially setting it to 1000 or -1000 as worse than the worst case:
 		if round(time.time() - get_turn_start_time(), 7) > get_player_time_limit():
 			print('Time Limit Reached!')
 			if max:
@@ -738,6 +789,9 @@ class Game:
 
 	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True, h2=True):
 		'''
+		Plays the game!
+
+		self: game object with all attributes
 		algo: Game.MINIMAX for minmax or Game.ALPHABETA
 		player_x: Game.AI for AI or Game.HUMAN
 		player_y: Game.AI for AI or Game.HUMAN
@@ -874,6 +928,11 @@ def main():
 		reset_Moves_PS()
 
 def menu():
+	'''
+		UI for user
+
+		returns inputs in array format
+	'''
 	print('\n---------- Welcome to Team Oranges Mini-Assignment 2 for COMP 472 ----------\n')
 
 	print('Would you like to use default values?')
