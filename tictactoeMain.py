@@ -352,11 +352,11 @@ class Game:
 	# def check_end checks(self) checks if the game has finished, returns winner, tie message, or None if game is still on going
 	def check_end(self):
 		'''
-			An extension to the method above. This prints out the information of the winner of a match or stalemate. As well as metrics.
+		An extension to the method above. This prints out the information of the winner of a match or stalemate. As well as metrics.
 
-			self: game object with all attributes
+		self: game object with all attributes
 
-			returns the result
+		returns the result
 		'''
 		global evaluation_time
 		self.result = self.is_end()
@@ -401,9 +401,9 @@ class Game:
 
 	def input_move(self):
 		'''
-			Receives player/AI input
+		Receives player/AI input
 
-			self: game object with all attributes
+		self: game object with all attributes
 		'''
 		while True:
 			print(F'Player {self.player_turn}, enter your move:')
@@ -416,7 +416,7 @@ class Game:
 
 	def switch_player(self):
 		'''
-			Switches player turns
+		Switches player turns
 		'''
 		if self.player_turn == 'X':
 			self.player_turn = 'O'
@@ -658,6 +658,7 @@ class Game:
 
 		self: game object with all attributes
 		max (bool): Chosing which player to minimize/maximize for
+		dept (int): Depth of the tree
 		h1 (bool): True is heuristic one, False is Heuristic 2
 
 		returns heuristic value acquired, and the x & y coordinate of it
