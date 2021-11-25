@@ -657,7 +657,7 @@ class Game:
 			heuristic_value = second_diagonals_lineup_streak_number
 		return heuristic_value
 
-	def minimax(self, max, depth, h1):
+	def minimax(self, max, depth, h1, nply):
 		'''
 		Minimax algorithm implementation
 
@@ -673,9 +673,11 @@ class Game:
 			print('Time Limit Reached!')
 			if max:
 				print('O LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
+				self.gameTraceFile.write('O LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
 				quit()
 			else:
 				print('X LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
+				self.gameTraceFile.write('X LOSES DUE TO TIME PASSED. PROGRAM TERMINATES')
 				quit()
 		value = 1000
 		if max:
@@ -694,7 +696,7 @@ class Game:
 				return (self.heuristic_two(max), x, y, depth)
 
 		hasCombinations = False
-		node_ADB = 0
+		node_AD = 0
 		number_of_children = 0
 		for i in range(0, self.board_size):
 			for j in range(0, self.board_size):
@@ -706,8 +708,8 @@ class Game:
 						self.evaluations_by_depth[depth] = get_Evaluation_Counter()
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _, d) = self.minimax(max=False, depth=depth-1, h1=h1)
-						node_ADB += d
+						(v, _, _, d) = self.minimax(max=False, depth=depth-1, h1=h1, nply=nply)
+						node_AD += (nply-d)
 						number_of_children += 1
 						if v >= value:
 							value = v
@@ -715,8 +717,8 @@ class Game:
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _, d) = self.minimax(max=True, depth=depth-1, h1=h1)
-						node_ADB += d
+						(v, _, _, d) = self.minimax(max=True, depth=depth-1, h1=h1, nply=nply)
+						node_AD += (nply-d)
 						number_of_children += 1
 						if v <= value:
 							value = v
@@ -728,10 +730,10 @@ class Game:
 				return (self.heuristic_one(max), x, y, depth)
 			else:
 				return (self.heuristic_two(max), x, y, depth)
-		node_ADB = node_ADB / number_of_children
-		return(value, x, y, node_ADB)
+		node_AD = node_AD / number_of_children
+		return(value, x, y, node_AD)
 
-	def alphabeta(self, alpha=-100, beta=100, max=False, depth=3, h1=True):
+	def alphabeta(self, alpha=-100, beta=100, max=False, depth=3, h1=True, nply=3):
 		'''
 		Alphabeta algorithm implementation
 
@@ -770,7 +772,7 @@ class Game:
 			else:
 				return (self.heuristic_two(max), x, y, depth)
 		
-		node_ADB = 0
+		node_AD = 0
 		number_of_children = 0
 		hasCombinations = False
 		for i in range(0, self.board_size):
@@ -783,8 +785,8 @@ class Game:
 						self.evaluations_by_depth[depth] = get_Evaluation_Counter()
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _, d) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1)
-						node_ADB += d
+						(v, _, _, d) = self.alphabeta(alpha, beta, max=False, depth=depth-1, h1=h1, nply=nply)
+						node_AD += (nply-d)
 						number_of_children += 1
 						if v >= value:
 							value = v
@@ -792,8 +794,8 @@ class Game:
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _, d) = self.alphabeta(alpha, beta, max=True, depth=depth-1, h1=h1)
-						node_ADB += d
+						(v, _, _, d) = self.alphabeta(alpha, beta, max=True, depth=depth-1, h1=h1, nply=nply)
+						node_AD += (nply-d)
 						number_of_children += 1
 						if v <= value:
 							value = v
@@ -816,7 +818,7 @@ class Game:
 				return (self.heuristic_one(max), x, y, depth)
 			else:
 				return (self.heuristic_two(max), x, y, depth)
-		node_ADB = node_ADB / number_of_children
+		node_AD = node_AD / number_of_children
 		return (value, x, y, depth)
 
 	def play(self, algo=None, player_x=None, player_o=None, d1=5, d2=5, h1=True, h2=True):
@@ -854,17 +856,17 @@ class Game:
 			turn_ARD = 0
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
-					(_, x, y, d) = self.minimax(max=False, depth=d1, h1=h1)
+					(_, x, y, d) = self.minimax(max=False, depth=d1, h1=h1, nply=d1)
 					turn_ARD = d
 				else:
-					(_, x, y, d) = self.minimax(max=True, depth=d2, h1=h2)
+					(_, x, y, d) = self.minimax(max=True, depth=d2, h1=h2, nply=d2)
 					turn_ARD = d
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
-					(m, x, y, d) = self.alphabeta(max=False, depth=d1, h1=h1)
+					(m, x, y, d) = self.alphabeta(max=False, depth=d1, h1=h1, nply=d1)
 					turn_ARD = d
 				else:
-					(m, x, y, d) = self.alphabeta(max=True, depth=d2, h1=h2)
+					(m, x, y, d) = self.alphabeta(max=True, depth=d2, h1=h2, nply=d2)
 					turn_ARD = d
 			end = time.time()
 			if self.player_turn != self.BLOCK and ((self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN)):
@@ -900,11 +902,14 @@ class Game:
 
 			print(F'iii\tEvaluations by depth: '+ str(self.evaluations_by_depth)) #NOT FINISHED
 			total_evaluations_by_depth.update(self.evaluations_by_depth)
+			self.gameTraceFile.write('iii\tEvaluations by depth: '+ str(self.evaluations_by_depth)+'\n')
 
 			temp_list = [key * val for key, val in self.evaluations_by_depth.items()]
 			temp_list = (sum(temp_list)/(sum(self.evaluations_by_depth.values())))
-			print(F'iv\tAverage evaluation depth '+str(round(temp_list, 2))) #Not FINISHED
-			print(F'iv\tAverage Recursion depth ' + str()) #NOT FINISHED
+			print(F'iv\tAverage evaluation depth '+str(round(temp_list, 2)))
+			self.gameTraceFile.write('iv\tAverage evaluation depth '+str(round(temp_list, 2))+'\n')
+			print(F'v\tAverage Recursion depth ' + str(round(turn_ARD)))
+			self.gameTraceFile.write('v\tAverage Recursion depth ' + str(round(turn_ARD))+'\n')
 			print(F'Recommended move: x = {x}, y = {y}')
 
 			self.current_state[x][y] = self.player_turn
